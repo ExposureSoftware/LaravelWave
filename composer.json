@@ -1,0 +1,51 @@
+{
+  "name": "exposuresoftware/laravel-zway",
+  "description": "Z-Way Server SDK for Laravel",
+  "homepage": "https://github.com/ExposureSoftware/LaravelWave",
+  "readme": "README.md",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Marshall Davis",
+      "email": "toothlessrebel@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "keywords": [
+    "laravel",
+    "php",
+    "z-wave",
+    "zwave",
+    "home automation",
+    "automation"
+  ],
+  "require": {
+    "php": ">=7.1.3",
+    "guzzlehttp/guzzle": "^6.3"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^3.5",
+    "phpunit/phpunit": "^8.2"
+  },
+  "autoload": {
+    "classmap": [],
+    "psr-4": {
+      "ExposureSoftware\\LaravelWave\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "ExposureSoftware\\LaravelWave\\LaravelWaveProvider"
+      ],
+      "aliases": {
+        "Zwave": "ExposureSoftware\\LaravelWave\\Facades\\ZwaveFacade"
+      }
+    }
+  }
+}
