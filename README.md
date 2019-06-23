@@ -115,6 +115,20 @@ use GuzzleHttp\Client;
 $zwave = new Zwave(new Client());
 ```
 
+## Commands
+Commands are provided to interact with the Z-Way API. These can also be scheduled via the
+Laravel [task scheduling](https://laravel.com/docs/5.8/scheduling).
+
+For full details of each command please see the `help` command of Artisan.
+
+```
+php artisan help zwave:fetch-devices
+```
+
+Signature | Description
+----|----
+zway:fetch-devices | Retrieve devices via the API.
+
 ## Available Methods
 Parameters listed are examples and those in _italics_ are optional.
 

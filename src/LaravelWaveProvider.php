@@ -5,6 +5,7 @@
 
 namespace ExposureSoftware\LaravelWave;
 
+use ExposureSoftware\LaravelWave\Commands\FetchDevices;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use GuzzleHttp\Client;
 use Illuminate\Support\ServiceProvider;
@@ -17,6 +18,12 @@ class LaravelWaveProvider extends ServiceProvider
             __DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../laravel/config/laravelwave.php') => config_path('laravelwave.php'),
         ]);
         $this->loadMigrationsFrom(__DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../laravel/migrations'));
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FetchDevices::class,
+            ]);
+        }
     }
 
     public function register(): void

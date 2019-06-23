@@ -7,7 +7,6 @@ namespace Tests;
 
 use ExposureSoftware\LaravelWave\Facades\ZwaveFacade;
 use ExposureSoftware\LaravelWave\LaravelWaveProvider;
-use Illuminate\Support\Facades\DB;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -17,7 +16,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
         $this->artisan('migrate');
 
-        DB::table('zway_devices')->get();
+        $this->withFactories(__DIR__ . '/factories');
     }
 
     protected function getPackageProviders($app)
