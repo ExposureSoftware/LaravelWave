@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Device extends Model
 {
+    public $incrementing = false;
+
     protected $table = 'zway_devices';
     protected $keyType = 'string';
     protected $fillable = [
