@@ -16,7 +16,7 @@ class LaravelWaveProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../laravel/config/laravelwave.php') => config_path('laravelwave.php'),
         ]);
-        $this->loadMigrationsFrom('laravel/migrations');
+        $this->loadMigrationsFrom(__DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../laravel/migrations'));
     }
 
     public function register(): void
