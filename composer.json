@@ -25,7 +25,8 @@
   },
   "require-dev": {
     "orchestra/testbench": "^3.5",
-    "phpunit/phpunit": "^8.2"
+    "phpunit/phpunit": "^8.2",
+    "fzaninotto/faker": "^1.8"
   },
   "autoload": {
     "classmap": [],
