@@ -140,7 +140,8 @@ class Zwave
     protected function addHeadersTo(RequestInterface $request): RequestInterface
     {
         if ($this->hasToken()) {
-            $request = $request->withAddedHeader('Authorization', "Bearer {$this->token}");
+            $request = $request->withAddedHeader('ZWAYSession', $this->token);
+            Log::debug('Added Authorization token to request.');
         }
 
         return $request;
@@ -157,6 +158,7 @@ class Zwave
                 Log::error("Could not decrypt token because {$e->getMessage()}");
             }
         }
+        Log::debug('Loaded token from file storage.');
 
         return $this->hasToken();
     }

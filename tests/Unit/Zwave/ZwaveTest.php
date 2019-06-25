@@ -39,6 +39,7 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturn($exists);
         Storage::shouldReceive('get')->with('zwave_token')->andReturn($token);
         Log::shouldReceive('error');
+        Log::shouldReceive('debug');
 
         $zwave = new Zwave($this->getMockClient());
 
@@ -62,6 +63,7 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andThrow(FileNotFoundException::class);
         Log::shouldReceive('error')->once();
+        Log::shouldReceive('debug');
 
         $zwave = new Zwave($this->getMockClient());
 
@@ -74,6 +76,7 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andReturn('');
         Log::shouldReceive('error')->once();
+        Log::shouldReceive('debug');
 
         $zwave = new Zwave($this->getMockClient());
 
@@ -276,7 +279,7 @@ class ZwaveTest extends TestCase
 
         $zwave->listDevices(false);
 
-        $this->assertArrayHasKey('Authorization', $history[0]['request']->getHeaders());
+        $this->assertArrayHasKey('ZWAYSession', $history[0]['request']->getHeaders());
     }
 
     public function testStoresTokenOnLogin(): void
