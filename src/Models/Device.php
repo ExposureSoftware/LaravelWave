@@ -24,6 +24,7 @@ class Device extends Model
         'permanently_hidden',
         'probeType',
         'visibility',
+        'node_id',
     ];
 
     protected function metrics(): HasOne
