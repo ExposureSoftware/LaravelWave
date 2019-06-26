@@ -8,18 +8,22 @@ namespace ExposureSoftware\LaravelWave\Zwave;
 use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
+use ExposureSoftware\LaravelWave\Models\Metric;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Psr\Http\Message\RequestInterface;
 use stdClass;
+use Throwable;
 
 class Zwave
 {
@@ -47,13 +51,13 @@ class Zwave
             'GET',
             'v1/devices'
         ));
-        $devices = $this->convertToModels(collect($response->devices));
+        $models = $this->convertToModels(collect($response->devices));
 
         if ($andSave) {
-            $this->save($devices);
+            $this->save($models);
         }
 
-        return $devices;
+        return $models->get('devices');
     }
 
     /**
@@ -93,43 +97,71 @@ class Zwave
 
     protected function convertToModels(Collection $devices): Collection
     {
-        return $devices->transform(function (stdClass $attributes): Device {
-            /** @var Device $device */
-            $device = Device::first(['id' => $attributes->id]) ?? $this->deviceFrom(collect((array) $attributes));
+        $deviceModels = collect();
+        $metricModels = collect();
 
-            return $device;
+        $devices->each(function (stdClass $attributes) use ($deviceModels, $metricModels): void {
+            $device = Device::first(['id' => $attributes->id]) ?? $this->device(collect((array) $attributes));
+            $deviceModels->push($device);
+            $metricModels->push($device->metrics ?? $this->metrics($device, collect((array) $attributes->metrics)));
         });
+
+        return collect([
+            'devices' => $deviceModels,
+            'metrics' => $metricModels,
+        ]);
     }
 
-    protected function deviceFrom(Collection $attributes): Device
+    protected function metrics(Device $for, Collection $from): Metric
+    {
+        $metric = new Metric([
+            'device_id' => $for->id,
+        ]);
+
+        return $metric->fill($this->matchColumns($metric, $from));
+    }
+
+    protected function device(Collection $from): Device
     {
         $device = new Device([
             /**
              * Why this attribute is not camel case is a mystery.
              */
-            'permanently_hidden' => $attributes->get('permanently_hidden'),
+            'permanently_hidden' => $from->get('permanently_hidden'),
         ]);
-        return $device->fill(
-            collect(Schema::getColumnListing($device->getTable()))
-                ->flip()
-                ->map(function (int $value, string $attribute) use ($attributes) {
-                    return $attributes->get(Str::camel($attribute));
-                })
-                ->reject(function ($value): bool {
-                    return is_null($value);
-                })
-                ->toArray()
-        );
+
+        return $device->fill($this->matchColumns($device, $from));
     }
 
-    protected function save(Collection $devices): bool
+    protected function matchColumns(Model $on, Collection $toAttributes): array
     {
-        return $devices->reduce(
-            function (bool $saved, Device $device): bool {
-                return $device->save() && $saved;
-            },
-            true
-        );
+        return collect(Schema::getColumnListing($on->getTable()))
+            ->flip()
+            ->map(function (int $value, string $attribute) use ($toAttributes) {
+                return $toAttributes->get(Str::camel($attribute));
+            })
+            ->reject(function ($value): bool {
+                return is_null($value);
+            })
+            ->toArray();
+    }
+
+    protected function save(Collection $models): bool
+    {
+        try {
+            $saved = DB::transaction(function () use ($models) {
+                return $models->reduce(function (bool $saved, Collection $modelSet) {
+                    return $saved && $modelSet->reduce(function (bool $saved, Model $model) {
+                            return $saved && $model->save();
+                        }, true);
+                }, true);
+            });
+        } catch (Throwable $e) {
+            dd($e);
+            $saved = false;
+        }
+
+        return $saved;
     }
 
     protected function storeToken(string $value): void
