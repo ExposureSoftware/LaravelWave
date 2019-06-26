@@ -640,6 +640,7 @@ class ZwaveTest extends TestCase
                 "icon"    => "/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png",
                 "message" => "",
             ],
+            "nodeId"             => 2,
             "order"              => (object) [
                 "rooms"     => 0,
                 "elements"  => 0,
@@ -668,6 +669,7 @@ class ZwaveTest extends TestCase
                 "text"  => "<div style=\"text-align: center;\">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>",
                 "icon"  => "app/img/logo-z-wave-z-only.png",
             ],
+            "nodeId"             => 3,
             "order"              => (object) [
                 "rooms"     => 0,
                 "elements"  => 0,

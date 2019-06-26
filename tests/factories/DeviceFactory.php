@@ -31,5 +31,6 @@ $factory->define(Device::class, function (Faker $faker) {
         'permanently_hidden' => $faker->boolean,
         'probeType'          => $faker->word,
         'visibility'         => $faker->boolean,
+        'node_id'            => $faker->unique()->randomNumber(),
     ];
 });
