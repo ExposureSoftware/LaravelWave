@@ -21,17 +21,15 @@ use Illuminate\Database\Eloquent\Factory;
 |
 */
 
-$factory->define(Device::class, function (Faker $faker) {
+$factory->define(Metric::class, function (Faker $faker) {
     return [
-        'id'                 => $faker->unique()->word,
-        'device_type'        => $faker->word,
-        'update_time'        => $faker->unixTime,
-        'creation_time'      => $faker->unixTime,
-        'has_history'        => $faker->boolean,
-        'creator_id'         => $faker->randomNumber(),
-        'permanently_hidden' => $faker->boolean,
-        'probeType'          => $faker->word,
-        'visibility'         => $faker->boolean,
-        'node_id'            => $faker->unique()->randomNumber(),
+        'device_id'   => function () {
+            return factory(Device::class)->create()->id;
+        },
+        'probe_title' => 'Temperature',
+        'scale_title' => 'C',
+        'level'       => 40,
+        'icon'        => 'temperature',
+        'title'       => 'Temperature - Mars',
     ];
 });

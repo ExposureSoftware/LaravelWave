@@ -137,3 +137,4 @@ Method | Returns | Description
 hasToken() | `bool` | Returns `true` or `false` depending on if the current instance has a token.
 login(_'admin'_, _'secret'_, _true_) | `bool` | Logs in with the given credentials. If none are provided the credentials from package configuration are used. The last parameter represents whether or not to store the token.
 listDevices(_true_) | `Illuminate\Support\Collection` | Returns a collection of all the devices known to the server. If passed `false` these will not be stored in the database.
+update(_device_) | `ExposureSoftware\LaravelWave\Device` | Returns the `Device` with updated attributes to reflect current state.

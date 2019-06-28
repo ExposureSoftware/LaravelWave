@@ -61,7 +61,7 @@ class Zwave
     }
 
     /**
-     * @param string|null $user
+     * @param string|null $as
      * @param string|null $withPassword
      * @param bool        $andStoreToken
      *
@@ -69,9 +69,9 @@ class Zwave
      * @throws NetworkFailure
      * @throws NoToken
      */
-    public function login(string $user = null, string $withPassword = null, bool $andStoreToken = true): bool
+    public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
     {
-        $user = $user ?? config('laravelwave.user');
+        $as = $as ?? config('laravelwave.user');
         $withPassword = $withPassword ?? config('laravelwave.password');
 
         $response = $this->send(
@@ -80,7 +80,7 @@ class Zwave
                 'v1/login',
                 [],
                 \GuzzleHttp\json_encode([
-                    'login'    => $user,
+                    'login'    => $as,
                     'password' => $withPassword,
                 ])
             ),
@@ -93,6 +93,21 @@ class Zwave
         }
 
         return $this->hasToken();
+    }
+
+    public function update(Device $device, $andSave = true): Device
+    {
+        $response = $this->send(new Request(
+            'GET',
+            "v1/devices/{$device->device_id}"
+        ));
+        $device->metrics->fill($this->matchColumns($device->metrics, collect((array) $response->metrics)));
+
+        if ($andSave) {
+            $device->metrics->save();
+        }
+
+        return $device;
     }
 
     protected function convertToModels(Collection $devices): Collection

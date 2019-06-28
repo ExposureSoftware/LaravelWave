@@ -8,6 +8,7 @@ namespace Tests\Unit\Zwave;
 use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
+use ExposureSoftware\LaravelWave\Models\Metric;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
@@ -708,6 +709,56 @@ class ZwaveTest extends TestCase
         $zwave->listDevices();
 
         $this->assertCount(2, Device::all());
+    }
+
+    public function testUpdateDevice(): void
+    {
+        Storage::shouldReceive('disk')->with('local')->andReturnSelf();
+        Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
+        Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
+        $metrics = (object)[
+            "probeTitle"       => "Luminiscence",
+            "scaleTitle"       => "Lux",
+            "level"            => 130,
+            "icon"             => "luminosity",
+            "title"            => "Luminiscence - Living Room",
+            "modificationTime" => 1464779507,
+            "lastLevel"        => 130,
+        ];
+        $device = (new Zwave($this->getMockClient(
+            [
+                new Response(
+                    200,
+                    [],
+                    \GuzzleHttp\json_encode([
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
+                        'data'    => (object) [
+                            "creationTime"       => 1464779507,
+                            "creatorId"          => 34,
+                            "deviceType"         => "sensorMultilevel",
+                            "h"                  => 1303283138,
+                            "hasHistory"         => false,
+                            "id"                 => "ZWayVDev_zway_2-0-49-3",
+                            "location"           => 0,
+                            "metrics"            => $metrics,
+                            "permanently_hidden" => false,
+                            "probeType"          => "luminosity",
+                            "tags"               => [],
+                            "visibility"         => true,
+                            "updateTime"         => 1464779507,
+                        ],
+                    ])
+                ),
+            ]
+        )))->update(factory(Metric::class)->create()->device);
+
+        $this->assertEquals($metrics->probeTitle, $device->metrics->probe_title);
+        $this->assertEquals($metrics->scaleTitle, $device->metrics->scale_title);
+        $this->assertEquals($metrics->level, $device->metrics->level);
+        $this->assertEquals($metrics->icon, $device->metrics->icon);
+        $this->assertEquals($metrics->title, $device->metrics->title);
     }
 
     public function storageProvider(): array
