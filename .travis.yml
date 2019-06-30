@@ -1,10 +1,13 @@
 language: php
-
 php:
   - '7.3'
-
 install:
   - composer install
-
+script:
+  - ./scripts/codesniff.sh
+  - vendor/bin/phpunit
 notifications:
   slack: exposuresoftware:rejbBtgoybEFtlOpR8FneKKQ
+cache:
+  directories:
+    - $HOME/.cache/composer
