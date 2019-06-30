@@ -27,7 +27,7 @@ class Device extends Model
         'node_id',
     ];
 
-    protected function metrics(): HasOne
+    public function metrics(): HasOne
     {
         return $this->hasOne(Metric::class, 'device_id');
     }
