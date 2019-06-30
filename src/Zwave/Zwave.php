@@ -99,7 +99,7 @@ class Zwave
     {
         $response = $this->send(new Request(
             'GET',
-            "v1/devices/{$device->device_id}"
+            "v1/devices/{$device->id}"
         ));
         $device->metrics->fill($this->matchColumns($device->metrics, collect((array) $response->metrics)));
 

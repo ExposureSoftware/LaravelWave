@@ -713,10 +713,11 @@ class ZwaveTest extends TestCase
 
     public function testUpdateDevice(): void
     {
+        $history = [];
         Storage::shouldReceive('disk')->with('local')->andReturnSelf();
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
-        $metrics = (object)[
+        $metrics = (object) [
             "probeTitle"       => "Luminiscence",
             "scaleTitle"       => "Lux",
             "level"            => 130,
@@ -751,9 +752,11 @@ class ZwaveTest extends TestCase
                         ],
                     ])
                 ),
-            ]
+            ],
+            $history
         )))->update(factory(Metric::class)->create()->device);
 
+        $this->assertEquals("v1/devices/{$device->id}", $history[0]['request']->getUri()->getPath());
         $this->assertEquals($metrics->probeTitle, $device->metrics->probe_title);
         $this->assertEquals($metrics->scaleTitle, $device->metrics->scale_title);
         $this->assertEquals($metrics->level, $device->metrics->level);
