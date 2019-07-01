@@ -48,10 +48,10 @@ class ZwaveTest extends TestCase
 
         $zwave = new Zwave($this->getMockClient());
 
-        $this->assertEquals(
+        static::assertSame(
             $hasToken,
             $zwave->hasToken(),
-            join('', [
+            implode('', [
                 'File ',
                 ($exists ? 'does ' : 'does not '),
                 "exist with value '{$token}'. ",
@@ -72,7 +72,7 @@ class ZwaveTest extends TestCase
 
         $zwave = new Zwave($this->getMockClient());
 
-        $this->assertFalse($zwave->hasToken());
+        static::assertFalse($zwave->hasToken());
     }
 
     public function testHandlesBadTokenData(): void
@@ -85,7 +85,7 @@ class ZwaveTest extends TestCase
 
         $zwave = new Zwave($this->getMockClient());
 
-        $this->assertFalse($zwave->hasToken());
+        static::assertFalse($zwave->hasToken());
     }
 
     public function testWillNotSendWithoutToken(): void
@@ -110,29 +110,29 @@ class ZwaveTest extends TestCase
                 200,
                 [],
                 \GuzzleHttp\json_encode([
-                    "data"    => (object) [
-                        "id"                        => 1,
-                        "role"                      => 1,
-                        "login"                     => "aLogin",
-                        "name"                      => "Marshall A. Davis",
-                        "lang"                      => "en",
-                        "color"                     => "#dddddd",
-                        "dashboard"                 => [],
-                        "interval"                  => 2000,
-                        "rooms"                     => [
+                    'data' => (object) [
+                        'id'        => 1,
+                        'role'      => 1,
+                        'login'     => 'aLogin',
+                        'name'      => 'Marshall A. Davis',
+                        'lang'      => 'en',
+                        'color'     => '#dddddd',
+                        'dashboard' => [],
+                        'interval'  => 2000,
+                        'rooms'     => [
                             0,
                         ],
-                        "expert_view"               => true,
-                        "hide_all_device_events"    => false,
-                        "hide_system_events"        => false,
-                        "hide_single_device_events" => [],
-                        "night_mode"                => true,
-                        "email"                     => "test@exposuresoftware.com",
-                        "sid"                       => "63d8f826-9727-ac3f-60cf-a4ca9cbf7faa",
+                        'expert_view'               => true,
+                        'hide_all_device_events'    => false,
+                        'hide_system_events'        => false,
+                        'hide_single_device_events' => [],
+                        'night_mode'                => true,
+                        'email'                     => 'test@exposuresoftware.com',
+                        'sid'                       => '63d8f826-9727-ac3f-60cf-a4ca9cbf7faa',
                     ],
-                    "code"    => 200,
-                    "message" => "200 OK",
-                    "error"   => null,
+                    'code'    => 200,
+                    'message' => '200 OK',
+                    'error'   => null,
                 ])
             ),
         ]));
@@ -166,29 +166,29 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "id"                        => 1,
-                            "role"                      => 1,
-                            "login"                     => "aLogin",
-                            "name"                      => "Marshall A. Davis",
-                            "lang"                      => "en",
-                            "color"                     => "#dddddd",
-                            "dashboard"                 => [],
-                            "interval"                  => 2000,
-                            "rooms"                     => [
+                        'data' => (object) [
+                            'id'        => 1,
+                            'role'      => 1,
+                            'login'     => 'aLogin',
+                            'name'      => 'Marshall A. Davis',
+                            'lang'      => 'en',
+                            'color'     => '#dddddd',
+                            'dashboard' => [],
+                            'interval'  => 2000,
+                            'rooms'     => [
                                 0,
                             ],
-                            "expert_view"               => true,
-                            "hide_all_device_events"    => false,
-                            "hide_system_events"        => false,
-                            "hide_single_device_events" => [],
-                            "night_mode"                => true,
-                            "email"                     => "test@exposuresoftware.com",
-                            "sid"                       => "63d8f826-9727-ac3f-60cf-a4ca9cbf7faa",
+                            'expert_view'               => true,
+                            'hide_all_device_events'    => false,
+                            'hide_system_events'        => false,
+                            'hide_single_device_events' => [],
+                            'night_mode'                => true,
+                            'email'                     => 'test@exposuresoftware.com',
+                            'sid'                       => '63d8f826-9727-ac3f-60cf-a4ca9cbf7faa',
                         ],
-                        "code"    => 200,
-                        "message" => "200 OK",
-                        "error"   => null,
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
                     ])
                 ),
             ],
@@ -197,7 +197,7 @@ class ZwaveTest extends TestCase
 
         $zwave->login();
 
-        $this->assertArrayNotHasKey('Authorization', $history[0]['request']->getHeaders());
+        static::assertArrayNotHasKey('Authorization', $history[0]['request']->getHeaders());
     }
 
     public function testProvidesAuthorizationHeaderWithToken(): void
@@ -213,63 +213,63 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "structureChanged" => false,
-                            "updateTime"       => 1561091908,
-                            "devices"          => [
+                        'data' => (object) [
+                            'structureChanged' => false,
+                            'updateTime'       => 1561091908,
+                            'devices'          => [
                                 (object) [
-                                    "creationTime"       => 1560912400,
-                                    "creatorId"          => 12,
-                                    "customIcons"        => (object) [],
-                                    "deviceType"         => "toggleButton",
-                                    "h"                  => -1891043069,
-                                    "hasHistory"         => false,
-                                    "id"                 => "MailNotifier_12",
-                                    "location"           => 0,
-                                    "metrics"            => (object) [
-                                        "level"   => "on",
-                                        "title"   => "Send Email Notification",
-                                        "icon"    => "/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png",
-                                        "message" => "",
+                                    'creationTime' => 1560912400,
+                                    'creatorId'    => 12,
+                                    'customIcons'  => (object) [],
+                                    'deviceType'   => 'toggleButton',
+                                    'h'            => -1891043069,
+                                    'hasHistory'   => false,
+                                    'id'           => 'MailNotifier_12',
+                                    'location'     => 0,
+                                    'metrics'      => (object) [
+                                        'level'   => 'on',
+                                        'title'   => 'Send Email Notification',
+                                        'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
+                                        'message' => '',
                                     ],
-                                    "order"              => (object) [
-                                        "rooms"     => 0,
-                                        "elements"  => 0,
-                                        "dashboard" => 0,
+                                    'order' => (object) [
+                                        'rooms'     => 0,
+                                        'elements'  => 0,
+                                        'dashboard' => 0,
                                     ],
-                                    "permanently_hidden" => false,
-                                    "probeType"          => "notification_email",
-                                    "tags"               => [
+                                    'permanently_hidden' => false,
+                                    'probeType'          => 'notification_email',
+                                    'tags'               => [
                                         'testing',
                                         'mocked',
                                     ],
-                                    "visibility"         => true,
-                                    "updateTime"         => 1560976328,
+                                    'visibility' => true,
+                                    'updateTime' => 1560976328,
                                 ],
                                 (object) [
-                                    "creationTime"       => 1560976328,
-                                    "creatorId"          => 5,
-                                    "customIcons"        => (object) [],
-                                    "deviceType"         => "text",
-                                    "h"                  => -1261400328,
-                                    "hasHistory"         => false,
-                                    "id"                 => "InfoWidget_5_Int",
-                                    "location"           => 0,
-                                    "metrics"            => (object) [
-                                        "title" => "Dear Expert User",
-                                        "text"  => "<div style=\"text-align: center;\">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>",
-                                        "icon"  => "app/img/logo-z-wave-z-only.png",
+                                    'creationTime' => 1560976328,
+                                    'creatorId'    => 5,
+                                    'customIcons'  => (object) [],
+                                    'deviceType'   => 'text',
+                                    'h'            => -1261400328,
+                                    'hasHistory'   => false,
+                                    'id'           => 'InfoWidget_5_Int',
+                                    'location'     => 0,
+                                    'metrics'      => (object) [
+                                        'title' => 'Dear Expert User',
+                                        'text'  => '<div style="text-align: center;">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>',
+                                        'icon'  => 'app/img/logo-z-wave-z-only.png',
                                     ],
-                                    "order"              => (object) [
-                                        "rooms"     => 0,
-                                        "elements"  => 0,
-                                        "dashboard" => 0,
+                                    'order' => (object) [
+                                        'rooms'     => 0,
+                                        'elements'  => 0,
+                                        'dashboard' => 0,
                                     ],
-                                    "permanently_hidden" => false,
-                                    "probeType"          => "",
-                                    "tags"               => [],
-                                    "visibility"         => true,
-                                    "updateTime"         => 1560976328,
+                                    'permanently_hidden' => false,
+                                    'probeType'          => '',
+                                    'tags'               => [],
+                                    'visibility'         => true,
+                                    'updateTime'         => 1560976328,
                                 ],
                             ],
                         ],
@@ -284,23 +284,24 @@ class ZwaveTest extends TestCase
 
         $zwave->listDevices(false);
 
-        $this->assertArrayHasKey('ZWAYSession', $history[0]['request']->getHeaders());
+        static::assertArrayHasKey('ZWAYSession', $history[0]['request']->getHeaders());
     }
 
     public function testStoresTokenOnLogin(): void
     {
-        $token = "63d8f826-9727-ac3f-60cf-a4ca9cbf7faa";
+        $token = '63d8f826-9727-ac3f-60cf-a4ca9cbf7faa';
         Storage::shouldReceive('disk')->with('local')->andReturnSelf();
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnFalse();
         Storage::shouldReceive('put')
             ->withArgs(function (...$args) use ($token) {
-                $isProperFile = $args[0] === 'zwave_token';
+                $isProperFile = 'zwave_token' === $args[0];
                 $correctToken = $token === decrypt($args[1]);
 
                 return $isProperFile && $correctToken;
             })
             ->once()
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         $zwave = new Zwave($this->getMockClient(
             [
@@ -308,29 +309,29 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "id"                        => 1,
-                            "role"                      => 1,
-                            "login"                     => "aLogin",
-                            "name"                      => "Marshall A. Davis",
-                            "lang"                      => "en",
-                            "color"                     => "#dddddd",
-                            "dashboard"                 => [],
-                            "interval"                  => 2000,
-                            "rooms"                     => [
+                        'data' => (object) [
+                            'id'        => 1,
+                            'role'      => 1,
+                            'login'     => 'aLogin',
+                            'name'      => 'Marshall A. Davis',
+                            'lang'      => 'en',
+                            'color'     => '#dddddd',
+                            'dashboard' => [],
+                            'interval'  => 2000,
+                            'rooms'     => [
                                 0,
                             ],
-                            "expert_view"               => true,
-                            "hide_all_device_events"    => false,
-                            "hide_system_events"        => false,
-                            "hide_single_device_events" => [],
-                            "night_mode"                => true,
-                            "email"                     => "test@exposuresoftware.com",
-                            "sid"                       => $token,
+                            'expert_view'               => true,
+                            'hide_all_device_events'    => false,
+                            'hide_system_events'        => false,
+                            'hide_single_device_events' => [],
+                            'night_mode'                => true,
+                            'email'                     => 'test@exposuresoftware.com',
+                            'sid'                       => $token,
                         ],
-                        "code"    => 200,
-                        "message" => "200 OK",
-                        "error"   => null,
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
                     ])
                 ),
             ]
@@ -351,29 +352,29 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "id"                        => 1,
-                            "role"                      => 1,
-                            "login"                     => "aLogin",
-                            "name"                      => "Marshall A. Davis",
-                            "lang"                      => "en",
-                            "color"                     => "#dddddd",
-                            "dashboard"                 => [],
-                            "interval"                  => 2000,
-                            "rooms"                     => [
+                        'data' => (object) [
+                            'id'        => 1,
+                            'role'      => 1,
+                            'login'     => 'aLogin',
+                            'name'      => 'Marshall A. Davis',
+                            'lang'      => 'en',
+                            'color'     => '#dddddd',
+                            'dashboard' => [],
+                            'interval'  => 2000,
+                            'rooms'     => [
                                 0,
                             ],
-                            "expert_view"               => true,
-                            "hide_all_device_events"    => false,
-                            "hide_system_events"        => false,
-                            "hide_single_device_events" => [],
-                            "night_mode"                => true,
-                            "email"                     => "test@exposuresoftware.com",
-                            "sid"                       => "63d8f826-9727-ac3f-60cf-a4ca9cbf7faa",
+                            'expert_view'               => true,
+                            'hide_all_device_events'    => false,
+                            'hide_system_events'        => false,
+                            'hide_single_device_events' => [],
+                            'night_mode'                => true,
+                            'email'                     => 'test@exposuresoftware.com',
+                            'sid'                       => '63d8f826-9727-ac3f-60cf-a4ca9cbf7faa',
                         ],
-                        "code"    => 200,
-                        "message" => "200 OK",
-                        "error"   => null,
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
                     ])
                 ),
             ]
@@ -385,7 +386,7 @@ class ZwaveTest extends TestCase
     public function testUsesConfiguredCredentials(): void
     {
         $history = [];
-        $token = "63d8f826-9727-ac3f-60cf-a4ca9cbf7faa";
+        $token = '63d8f826-9727-ac3f-60cf-a4ca9cbf7faa';
         $password = 'aPassword';
         $user = 'aUser';
         $this->app['config']->set('laravelwave.user', $user);
@@ -394,13 +395,14 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnFalse();
         Storage::shouldReceive('put')
             ->withArgs(function (...$args) use ($token) {
-                $isProperFile = $args[0] === 'zwave_token';
+                $isProperFile = 'zwave_token' === $args[0];
                 $correctToken = $token === decrypt($args[1]);
 
                 return $isProperFile && $correctToken;
             })
             ->once()
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         $zwave = new Zwave($this->getMockClient(
             [
@@ -408,29 +410,29 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "id"                        => 1,
-                            "role"                      => 1,
-                            "login"                     => "aLogin",
-                            "name"                      => "Marshall A. Davis",
-                            "lang"                      => "en",
-                            "color"                     => "#dddddd",
-                            "dashboard"                 => [],
-                            "interval"                  => 2000,
-                            "rooms"                     => [
+                        'data' => (object) [
+                            'id'        => 1,
+                            'role'      => 1,
+                            'login'     => 'aLogin',
+                            'name'      => 'Marshall A. Davis',
+                            'lang'      => 'en',
+                            'color'     => '#dddddd',
+                            'dashboard' => [],
+                            'interval'  => 2000,
+                            'rooms'     => [
                                 0,
                             ],
-                            "expert_view"               => true,
-                            "hide_all_device_events"    => false,
-                            "hide_system_events"        => false,
-                            "hide_single_device_events" => [],
-                            "night_mode"                => true,
-                            "email"                     => "test@exposuresoftware.com",
-                            "sid"                       => $token,
+                            'expert_view'               => true,
+                            'hide_all_device_events'    => false,
+                            'hide_system_events'        => false,
+                            'hide_single_device_events' => [],
+                            'night_mode'                => true,
+                            'email'                     => 'test@exposuresoftware.com',
+                            'sid'                       => $token,
                         ],
-                        "code"    => 200,
-                        "message" => "200 OK",
-                        "error"   => null,
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
                     ])
                 ),
             ],
@@ -440,14 +442,14 @@ class ZwaveTest extends TestCase
         $zwave->login();
 
         $request = \GuzzleHttp\json_decode((string) $history[0]['request']->getBody());
-        $this->assertEquals($user, $request->login);
-        $this->assertEquals($password, $request->password);
+        static::assertSame($user, $request->login);
+        static::assertSame($password, $request->password);
     }
 
     public function testUsesGivenCredentials(): void
     {
         $history = [];
-        $token = "63d8f826-9727-ac3f-60cf-a4ca9cbf7faa";
+        $token = '63d8f826-9727-ac3f-60cf-a4ca9cbf7faa';
         $password = 'anotherPassword';
         $user = 'anotherUser';
         $this->app['config']->set('laravelwave.user', 'aUser');
@@ -456,13 +458,14 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnFalse();
         Storage::shouldReceive('put')
             ->withArgs(function (...$args) use ($token) {
-                $isProperFile = $args[0] === 'zwave_token';
+                $isProperFile = 'zwave_token' === $args[0];
                 $correctToken = $token === decrypt($args[1]);
 
                 return $isProperFile && $correctToken;
             })
             ->once()
-            ->andReturnTrue();
+            ->andReturnTrue()
+        ;
 
         $zwave = new Zwave($this->getMockClient(
             [
@@ -470,29 +473,29 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "id"                        => 1,
-                            "role"                      => 1,
-                            "login"                     => "aLogin",
-                            "name"                      => "Marshall A. Davis",
-                            "lang"                      => "en",
-                            "color"                     => "#dddddd",
-                            "dashboard"                 => [],
-                            "interval"                  => 2000,
-                            "rooms"                     => [
+                        'data' => (object) [
+                            'id'        => 1,
+                            'role'      => 1,
+                            'login'     => 'aLogin',
+                            'name'      => 'Marshall A. Davis',
+                            'lang'      => 'en',
+                            'color'     => '#dddddd',
+                            'dashboard' => [],
+                            'interval'  => 2000,
+                            'rooms'     => [
                                 0,
                             ],
-                            "expert_view"               => true,
-                            "hide_all_device_events"    => false,
-                            "hide_system_events"        => false,
-                            "hide_single_device_events" => [],
-                            "night_mode"                => true,
-                            "email"                     => "test@exposuresoftware.com",
-                            "sid"                       => $token,
+                            'expert_view'               => true,
+                            'hide_all_device_events'    => false,
+                            'hide_system_events'        => false,
+                            'hide_single_device_events' => [],
+                            'night_mode'                => true,
+                            'email'                     => 'test@exposuresoftware.com',
+                            'sid'                       => $token,
                         ],
-                        "code"    => 200,
-                        "message" => "200 OK",
-                        "error"   => null,
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
                     ])
                 ),
             ],
@@ -502,8 +505,8 @@ class ZwaveTest extends TestCase
         $zwave->login($user, $password);
 
         $request = \GuzzleHttp\json_decode((string) $history[0]['request']->getBody());
-        $this->assertEquals($user, $request->login);
-        $this->assertEquals($password, $request->password);
+        static::assertSame($user, $request->login);
+        static::assertSame($password, $request->password);
     }
 
     public function testBuildsUrlFromConfiguration(): void
@@ -520,9 +523,9 @@ class ZwaveTest extends TestCase
         /** @var Uri $uri */
         $uri = $clientProperty->getValue($zwave)->getConfig('base_uri');
 
-        $this->assertEquals($host, "{$uri->getScheme()}://{$uri->getHost()}");
-        $this->assertEquals($port, $uri->getPort());
-        $this->assertEquals(Zwave::BASE_PATH, $uri->getPath());
+        static::assertSame($host, "{$uri->getScheme()}://{$uri->getHost()}");
+        static::assertSame($port, $uri->getPort());
+        static::assertSame(Zwave::BASE_PATH, $uri->getPath());
     }
 
     public function testListsDevices(): void
@@ -532,58 +535,58 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
         $deviceOne = (object) [
-            "creationTime"       => 1560912400,
-            "creatorId"          => 12,
-            "customIcons"        => (object) [],
-            "deviceType"         => "toggleButton",
-            "h"                  => -1891043069,
-            "hasHistory"         => false,
-            "id"                 => "MailNotifier_12",
-            "location"           => 0,
-            "metrics"            => (object) [
-                "level"   => "on",
-                "title"   => "Send Email Notification",
-                "icon"    => "/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png",
-                "message" => "",
+            'creationTime' => 1560912400,
+            'creatorId'    => 12,
+            'customIcons'  => (object) [],
+            'deviceType'   => 'toggleButton',
+            'h'            => -1891043069,
+            'hasHistory'   => false,
+            'id'           => 'MailNotifier_12',
+            'location'     => 0,
+            'metrics'      => (object) [
+                'level'   => 'on',
+                'title'   => 'Send Email Notification',
+                'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
+                'message' => '',
             ],
-            "order"              => (object) [
-                "rooms"     => 0,
-                "elements"  => 0,
-                "dashboard" => 0,
+            'order' => (object) [
+                'rooms'     => 0,
+                'elements'  => 0,
+                'dashboard' => 0,
             ],
-            "permanently_hidden" => false,
-            "probeType"          => "notification_email",
-            "tags"               => [
+            'permanently_hidden' => false,
+            'probeType'          => 'notification_email',
+            'tags'               => [
                 'testing',
                 'mocked',
             ],
-            "visibility"         => true,
-            "updateTime"         => 1560976328,
+            'visibility' => true,
+            'updateTime' => 1560976328,
         ];
         $deviceTwo = (object) [
-            "creationTime"       => 1560976328,
-            "creatorId"          => 5,
-            "customIcons"        => (object) [],
-            "deviceType"         => "text",
-            "h"                  => -1261400328,
-            "hasHistory"         => false,
-            "id"                 => "InfoWidget_5_Int",
-            "location"           => 0,
-            "metrics"            => (object) [
-                "title" => "Dear Expert User",
-                "text"  => "<div style=\"text-align: center;\">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>",
-                "icon"  => "app/img/logo-z-wave-z-only.png",
+            'creationTime' => 1560976328,
+            'creatorId'    => 5,
+            'customIcons'  => (object) [],
+            'deviceType'   => 'text',
+            'h'            => -1261400328,
+            'hasHistory'   => false,
+            'id'           => 'InfoWidget_5_Int',
+            'location'     => 0,
+            'metrics'      => (object) [
+                'title' => 'Dear Expert User',
+                'text'  => '<div style="text-align: center;">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>',
+                'icon'  => 'app/img/logo-z-wave-z-only.png',
             ],
-            "order"              => (object) [
-                "rooms"     => 0,
-                "elements"  => 0,
-                "dashboard" => 0,
+            'order' => (object) [
+                'rooms'     => 0,
+                'elements'  => 0,
+                'dashboard' => 0,
             ],
-            "permanently_hidden" => false,
-            "probeType"          => "",
-            "tags"               => [],
-            "visibility"         => true,
-            "updateTime"         => 1560976328,
+            'permanently_hidden' => false,
+            'probeType'          => '',
+            'tags'               => [],
+            'visibility'         => true,
+            'updateTime'         => 1560976328,
         ];
 
         $zwave = new Zwave($this->getMockClient(
@@ -592,10 +595,10 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "structureChanged" => false,
-                            "updateTime"       => 1561091908,
-                            "devices"          => [
+                        'data' => (object) [
+                            'structureChanged' => false,
+                            'updateTime'       => 1561091908,
+                            'devices'          => [
                                 $deviceOne,
                                 $deviceTwo,
                             ],
@@ -615,12 +618,13 @@ class ZwaveTest extends TestCase
         $devices->each(function (Device $device) use ($deviceOne, $deviceTwo) {
             collect($device->getAttributes())
                 ->reject(function ($value, string $key): bool {
-                    return $key === 'permanently_hidden';
+                    return 'permanently_hidden' === $key;
                 })
                 ->each(function ($value, string $attribute) use ($deviceOne, $deviceTwo) {
                     $attribute = Str::camel($attribute);
-                    $this->assertTrue(($deviceOne->$attribute ?? null) === $value || ($deviceTwo->$attribute ?? null) === $value);
-                });
+                    $this->assertTrue(($deviceOne->{$attribute} ?? null) === $value || ($deviceTwo->{$attribute} ?? null) === $value);
+                })
+            ;
         });
     }
 
@@ -631,60 +635,60 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
         $deviceOne = (object) [
-            "creationTime"       => 1560912400,
-            "creatorId"          => 12,
-            "customIcons"        => (object) [],
-            "deviceType"         => "toggleButton",
-            "h"                  => -1891043069,
-            "hasHistory"         => false,
-            "id"                 => "MailNotifier_12",
-            "location"           => 0,
-            "metrics"            => (object) [
-                "level"   => "on",
-                "title"   => "Send Email Notification",
-                "icon"    => "/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png",
-                "message" => "",
+            'creationTime' => 1560912400,
+            'creatorId'    => 12,
+            'customIcons'  => (object) [],
+            'deviceType'   => 'toggleButton',
+            'h'            => -1891043069,
+            'hasHistory'   => false,
+            'id'           => 'MailNotifier_12',
+            'location'     => 0,
+            'metrics'      => (object) [
+                'level'   => 'on',
+                'title'   => 'Send Email Notification',
+                'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
+                'message' => '',
             ],
-            "nodeId"             => 2,
-            "order"              => (object) [
-                "rooms"     => 0,
-                "elements"  => 0,
-                "dashboard" => 0,
+            'nodeId' => 2,
+            'order'  => (object) [
+                'rooms'     => 0,
+                'elements'  => 0,
+                'dashboard' => 0,
             ],
-            "permanently_hidden" => false,
-            "probeType"          => "notification_email",
-            "tags"               => [
+            'permanently_hidden' => false,
+            'probeType'          => 'notification_email',
+            'tags'               => [
                 'testing',
                 'mocked',
             ],
-            "visibility"         => true,
-            "updateTime"         => 1560976328,
+            'visibility' => true,
+            'updateTime' => 1560976328,
         ];
         $deviceTwo = (object) [
-            "creationTime"       => 1560976328,
-            "creatorId"          => 5,
-            "customIcons"        => (object) [],
-            "deviceType"         => "text",
-            "h"                  => -1261400328,
-            "hasHistory"         => false,
-            "id"                 => "InfoWidget_5_Int",
-            "location"           => 0,
-            "metrics"            => (object) [
-                "title" => "Dear Expert User",
-                "text"  => "<div style=\"text-align: center;\">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>",
-                "icon"  => "app/img/logo-z-wave-z-only.png",
+            'creationTime' => 1560976328,
+            'creatorId'    => 5,
+            'customIcons'  => (object) [],
+            'deviceType'   => 'text',
+            'h'            => -1261400328,
+            'hasHistory'   => false,
+            'id'           => 'InfoWidget_5_Int',
+            'location'     => 0,
+            'metrics'      => (object) [
+                'title' => 'Dear Expert User',
+                'text'  => '<div style="text-align: center;">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>',
+                'icon'  => 'app/img/logo-z-wave-z-only.png',
             ],
-            "nodeId"             => 3,
-            "order"              => (object) [
-                "rooms"     => 0,
-                "elements"  => 0,
-                "dashboard" => 0,
+            'nodeId' => 3,
+            'order'  => (object) [
+                'rooms'     => 0,
+                'elements'  => 0,
+                'dashboard' => 0,
             ],
-            "permanently_hidden" => false,
-            "probeType"          => "",
-            "tags"               => [],
-            "visibility"         => true,
-            "updateTime"         => 1560976328,
+            'permanently_hidden' => false,
+            'probeType'          => '',
+            'tags'               => [],
+            'visibility'         => true,
+            'updateTime'         => 1560976328,
         ];
 
         $zwave = new Zwave($this->getMockClient(
@@ -693,10 +697,10 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        "data"    => (object) [
-                            "structureChanged" => false,
-                            "updateTime"       => 1561091908,
-                            "devices"          => [
+                        'data' => (object) [
+                            'structureChanged' => false,
+                            'updateTime'       => 1561091908,
+                            'devices'          => [
                                 $deviceOne,
                                 $deviceTwo,
                             ],
@@ -712,7 +716,7 @@ class ZwaveTest extends TestCase
 
         $zwave->listDevices();
 
-        $this->assertCount(2, Device::all());
+        static::assertCount(2, Device::all());
     }
 
     public function testUpdateDevice(): void
@@ -722,13 +726,13 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
         $metrics = (object) [
-            "probeTitle"       => "Luminiscence",
-            "scaleTitle"       => "Lux",
-            "level"            => 130,
-            "icon"             => "luminosity",
-            "title"            => "Luminiscence - Living Room",
-            "modificationTime" => 1464779507,
-            "lastLevel"        => 130,
+            'probeTitle'       => 'Luminiscence',
+            'scaleTitle'       => 'Lux',
+            'level'            => 130,
+            'icon'             => 'luminosity',
+            'title'            => 'Luminiscence - Living Room',
+            'modificationTime' => 1464779507,
+            'lastLevel'        => 130,
         ];
         $device = (new Zwave($this->getMockClient(
             [
@@ -740,19 +744,19 @@ class ZwaveTest extends TestCase
                         'message' => '200 OK',
                         'error'   => null,
                         'data'    => (object) [
-                            "creationTime"       => 1464779507,
-                            "creatorId"          => 34,
-                            "deviceType"         => "sensorMultilevel",
-                            "h"                  => 1303283138,
-                            "hasHistory"         => false,
-                            "id"                 => "ZWayVDev_zway_2-0-49-3",
-                            "location"           => 0,
-                            "metrics"            => $metrics,
-                            "permanently_hidden" => false,
-                            "probeType"          => "luminosity",
-                            "tags"               => [],
-                            "visibility"         => true,
-                            "updateTime"         => 1464779507,
+                            'creationTime'       => 1464779507,
+                            'creatorId'          => 34,
+                            'deviceType'         => 'sensorMultilevel',
+                            'h'                  => 1303283138,
+                            'hasHistory'         => false,
+                            'id'                 => 'ZWayVDev_zway_2-0-49-3',
+                            'location'           => 0,
+                            'metrics'            => $metrics,
+                            'permanently_hidden' => false,
+                            'probeType'          => 'luminosity',
+                            'tags'               => [],
+                            'visibility'         => true,
+                            'updateTime'         => 1464779507,
                         ],
                     ])
                 ),
@@ -760,19 +764,19 @@ class ZwaveTest extends TestCase
             $history
         )))->update(factory(Metric::class)->create()->device);
 
-        $this->assertEquals("v1/devices/{$device->id}", $history[0]['request']->getUri()->getPath());
-        $this->assertEquals($metrics->probeTitle, $device->metrics->probe_title);
-        $this->assertEquals($metrics->scaleTitle, $device->metrics->scale_title);
-        $this->assertEquals($metrics->level, $device->metrics->level);
-        $this->assertEquals($metrics->icon, $device->metrics->icon);
-        $this->assertEquals($metrics->title, $device->metrics->title);
+        static::assertSame("v1/devices/{$device->id}", $history[0]['request']->getUri()->getPath());
+        static::assertSame($metrics->probeTitle, $device->metrics->probe_title);
+        static::assertSame($metrics->scaleTitle, $device->metrics->scale_title);
+        static::assertSame($metrics->level, $device->metrics->level);
+        static::assertSame($metrics->icon, $device->metrics->icon);
+        static::assertSame($metrics->title, $device->metrics->title);
     }
 
     public function testReturnsFalseIfNoCommands(): void
     {
         $device = factory(Device::class)->create();
 
-        $this->assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
+        static::assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
     }
 
     public function testsRunsCommands(): void
@@ -787,7 +791,7 @@ class ZwaveTest extends TestCase
             return $mockBasics;
         });
 
-        $this->assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
+        static::assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
     }
 
     public function storageProvider(): array
