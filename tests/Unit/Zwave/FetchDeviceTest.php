@@ -41,13 +41,15 @@ class FetchDeviceTest extends TestCase
             $mockZwave->shouldReceive('hasToken')->once()->andReturnTrue();
             $mockZwave->shouldReceive('listDevices')
                 ->withNoArgs()
-                ->andReturn($devices);
+                ->andReturn($devices)
+            ;
 
             return $mockZwave;
         });
 
         $this->artisan('zway:fetch-devices')
-            ->expectsOutput("8 devices reported. 3 new devices added.")
-            ->assertExitCode(0);
+            ->expectsOutput('8 devices reported. 3 new devices added.')
+            ->assertExitCode(0)
+        ;
     }
 }

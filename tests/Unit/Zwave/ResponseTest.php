@@ -13,7 +13,7 @@ class ResponseTest extends TestCase
 {
     public function testInstantiates(): void
     {
-        $this->assertInstanceOf(
+        static::assertInstanceOf(
             ZwaveResponse::class,
             new ZwaveResponse(new HttpResponse(
                 200,
@@ -36,8 +36,8 @@ class ResponseTest extends TestCase
             null
         ));
 
-        $this->assertInstanceOf(ZwaveResponse::class, $response);
-        $this->assertStringEndsWith(json_last_error_msg(), $response->getError());
+        static::assertInstanceOf(ZwaveResponse::class, $response);
+        static::assertStringEndsWith(json_last_error_msg(), $response->getError());
     }
 
     public function testHandlesMissingAttribute(): void
@@ -52,22 +52,22 @@ class ResponseTest extends TestCase
             ])
         ));
 
-        $this->assertInstanceOf(ZwaveResponse::class, $response);
-        $this->assertNull($response->getCode());
+        static::assertInstanceOf(ZwaveResponse::class, $response);
+        static::assertNull($response->getCode());
     }
 
     public function testRetrievesDataProperties(): void
     {
         $data = [
-            'id'                        => 1,
-            'role'                      => 1,
-            'login'                     => 'aLogin',
-            'name'                      => 'Marshall A. Davis',
-            'lang'                      => 'en',
-            'color'                     => '#dddddd',
-            'dashboard'                 => [],
-            'interval'                  => 2000,
-            'rooms'                     => [
+            'id'        => 1,
+            'role'      => 1,
+            'login'     => 'aLogin',
+            'name'      => 'Marshall A. Davis',
+            'lang'      => 'en',
+            'color'     => '#dddddd',
+            'dashboard' => [],
+            'interval'  => 2000,
+            'rooms'     => [
                 0,
             ],
             'expert_view'               => true,
@@ -89,10 +89,10 @@ class ResponseTest extends TestCase
             ])
         ));
 
-        $this->assertInstanceOf(ZwaveResponse::class, $response);
+        static::assertInstanceOf(ZwaveResponse::class, $response);
         foreach ($data as $attribute => $value) {
-            if (!is_array($value)) {
-                $this->assertEquals($value, $response->$attribute, "Response attribute {$attribute} was not as expected.");
+            if (!\is_array($value)) {
+                static::assertSame($value, $response->{$attribute}, "Response attribute {$attribute} was not as expected.");
             }
         }
     }
@@ -110,7 +110,7 @@ class ResponseTest extends TestCase
             ])
         ));
 
-        $this->assertInstanceOf(ZwaveResponse::class, $response);
-        $this->assertNull($response->invalidProperty);
+        static::assertInstanceOf(ZwaveResponse::class, $response);
+        static::assertNull($response->invalidProperty);
     }
 }

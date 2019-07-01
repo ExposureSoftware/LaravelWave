@@ -52,7 +52,8 @@ class FetchDevices extends Command
             ->filter(function (Device $device) use ($startTime) {
                 return $startTime->lessThanOrEqualTo($device->{$device->getCreatedAtColumn()});
             })
-            ->count();
+            ->count()
+        ;
         $this->info("{$devices->count()} devices reported. {$newDevices} new devices added.");
     }
 }

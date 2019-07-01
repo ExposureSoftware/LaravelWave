@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Metric extends Model
 {
-    protected $table = 'zway_metrics';
-
     public $fillable = [
         'device_id',
         'probe_title',
@@ -19,6 +17,7 @@ class Metric extends Model
         'icon',
         'title',
     ];
+    protected $table = 'zway_metrics';
 
     public function device()
     {

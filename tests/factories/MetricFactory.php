@@ -2,13 +2,12 @@
 /**
  * ExposureSoftware
  */
-
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Metric;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
-/** @var Factory $factory */
+/* @var Factory $factory */
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +22,7 @@ use Illuminate\Database\Eloquent\Factory;
 
 $factory->define(Metric::class, function (Faker $faker) {
     return [
-        'device_id'   => function () {
+        'device_id' => function () {
             return factory(Device::class)->create()->id;
         },
         'probe_title' => 'Temperature',

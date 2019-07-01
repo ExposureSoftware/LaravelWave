@@ -18,7 +18,7 @@ class Response
     protected $code;
     /** @var string */
     protected $error;
-    
+
     public function __construct(ResponseInterface $response)
     {
         try {
@@ -35,7 +35,7 @@ class Response
 
     public function __get($name)
     {
-        return $this->data->$name ?? null;
+        return $this->data->{$name} ?? null;
     }
 
     public function getMessage()

@@ -5,7 +5,6 @@
 
 namespace ExposureSoftware\LaravelWave\Exceptions;
 
-
 class TokenInvalid extends LaravelWaveException
 {
     public function __construct()

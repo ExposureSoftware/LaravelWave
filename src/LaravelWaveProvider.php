@@ -15,9 +15,9 @@ class LaravelWaveProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../laravel/config/laravelwave.php') => config_path('laravelwave.php'),
+            __DIR__.str_replace('/', \DIRECTORY_SEPARATOR, '/../laravel/config/laravelwave.php') => config_path('laravelwave.php'),
         ]);
-        $this->loadMigrationsFrom(__DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/../laravel/migrations'));
+        $this->loadMigrationsFrom(__DIR__.str_replace('/', \DIRECTORY_SEPARATOR, '/../laravel/migrations'));
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -30,7 +30,7 @@ class LaravelWaveProvider extends ServiceProvider
     {
         $this->app->singleton(Zwave::class, function () {
             return new Zwave(new Client([
-                'base_uri' => join('', [
+                'base_uri' => implode('', [
                     config('laravelwave.host'),
                     ':',
                     config('laravelwave.port'),

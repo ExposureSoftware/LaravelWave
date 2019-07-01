@@ -43,7 +43,7 @@ class Zwave
 
     public function hasToken(): bool
     {
-        return is_string($this->token);
+        return \is_string($this->token);
     }
 
     public function listDevices(bool $andSave = true): Collection
@@ -62,13 +62,14 @@ class Zwave
     }
 
     /**
-     * @param string|null $as
-     * @param string|null $withPassword
+     * @param null|string $as
+     * @param null|string $withPassword
      * @param bool        $andStoreToken
      *
-     * @return bool
      * @throws NetworkFailure
      * @throws NoToken
+     *
+     * @return bool
      */
     public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
     {
@@ -118,8 +119,8 @@ class Zwave
 
     protected function run(string $command, Commands $ofType, array $given): bool
     {
-        return (method_exists($ofType, $command) && is_callable([$ofType, $command]))
-            ? $ofType->$command(...$given)
+        return (method_exists($ofType, $command) && \is_callable([$ofType, $command]))
+            ? $ofType->{$command}(...$given)
             : false;
     }
 
@@ -157,7 +158,7 @@ class Zwave
     protected function device(Collection $from): Device
     {
         $device = new Device([
-            /**
+            /*
              * Why this attribute is not camel case is a mystery.
              */
             'permanently_hidden' => $from->get('permanently_hidden'),
@@ -174,9 +175,10 @@ class Zwave
                 return $toAttributes->get(Str::camel($attribute));
             })
             ->reject(function ($value): bool {
-                return is_null($value);
+                return \is_null($value);
             })
-            ->toArray();
+            ->toArray()
+        ;
     }
 
     protected function save(Collection $models): bool
@@ -185,8 +187,8 @@ class Zwave
             $saved = DB::transaction(function () use ($models) {
                 return $models->reduce(function (bool $saved, Collection $modelSet) {
                     return $saved && $modelSet->reduce(function (bool $saved, Model $model) {
-                            return $saved && $model->save();
-                        }, true);
+                        return $saved && $model->save();
+                    }, true);
                 }, true);
             });
         } catch (Throwable $e) {
@@ -218,7 +220,7 @@ class Zwave
             try {
                 $this->token = decrypt(Storage::disk('local')->get('zwave_token'));
             } catch (FileNotFoundException $e) {
-                Log::error("Token storage does not exist following check.");
+                Log::error('Token storage does not exist following check.');
             } catch (DecryptException $e) {
                 Log::error("Could not decrypt token because {$e->getMessage()}");
             }
@@ -232,9 +234,10 @@ class Zwave
      * @param RequestInterface $request
      * @param bool             $withoutToken
      *
-     * @return Response
      * @throws NetworkFailure
      * @throws NoToken
+     *
+     * @return Response
      */
     protected function send(RequestInterface $request, bool $withoutToken = false): Response
     {
