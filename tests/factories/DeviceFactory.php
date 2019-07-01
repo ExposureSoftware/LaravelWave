@@ -4,7 +4,6 @@
  */
 
 use ExposureSoftware\LaravelWave\Models\Device;
-use ExposureSoftware\LaravelWave\Models\Metric;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 

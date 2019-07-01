@@ -9,6 +9,8 @@ use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Metric;
+use ExposureSoftware\LaravelWave\Zwave\Commands\Basic;
+use ExposureSoftware\LaravelWave\Zwave\Commands\SwitchBinary;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
@@ -19,9 +21,11 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Mockery;
 use ReflectionClass;
 use Tests\TestCase;
 
@@ -762,6 +766,28 @@ class ZwaveTest extends TestCase
         $this->assertEquals($metrics->level, $device->metrics->level);
         $this->assertEquals($metrics->icon, $device->metrics->icon);
         $this->assertEquals($metrics->title, $device->metrics->title);
+    }
+
+    public function testReturnsFalseIfNoCommands(): void
+    {
+        $device = factory(Device::class)->create();
+
+        $this->assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
+    }
+
+    public function testsRunsCommands(): void
+    {
+        $device = factory(Device::class)->create([
+            'device_type' => 'switchBinary',
+        ]);
+        App::bind(Basic::class, function () {
+            $mockBasics = Mockery::mock(SwitchBinary::class);
+            $mockBasics->shouldReceive('color')->with([1, 2, 3])->once()->andReturnTrue();
+
+            return $mockBasics;
+        });
+
+        $this->assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
     }
 
     public function storageProvider(): array

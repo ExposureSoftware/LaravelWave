@@ -9,6 +9,7 @@ use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Metric;
+use ExposureSoftware\LaravelWave\Zwave\Commands\Commands;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
@@ -108,6 +109,23 @@ class Zwave
         }
 
         return $device;
+    }
+
+    public function command(Device $device, string $to, array $with): bool
+    {
+        return $this->run($to, Commands::buildFor($device), $with);
+    }
+
+    protected function run(string $command, Commands $ofType, array $given): bool
+    {
+        return (method_exists($ofType, $command) && is_callable([$ofType, $command]))
+            ? $ofType->$command(...$given)
+            : false;
+    }
+
+    protected function commandsFor(Device $device): Commands
+    {
+        return Commands::buildFor($device);
     }
 
     protected function convertToModels(Collection $devices): Collection
