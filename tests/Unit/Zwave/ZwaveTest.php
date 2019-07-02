@@ -9,7 +9,6 @@ use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Metric;
-use ExposureSoftware\LaravelWave\Zwave\Commands\Basic;
 use ExposureSoftware\LaravelWave\Zwave\Commands\SwitchBinary;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use GuzzleHttp\Client;
@@ -111,15 +110,15 @@ class ZwaveTest extends TestCase
                 [],
                 \GuzzleHttp\json_encode([
                     'data' => (object) [
-                        'id'        => 1,
-                        'role'      => 1,
-                        'login'     => 'aLogin',
-                        'name'      => 'Marshall A. Davis',
-                        'lang'      => 'en',
-                        'color'     => '#dddddd',
-                        'dashboard' => [],
-                        'interval'  => 2000,
-                        'rooms'     => [
+                        'id'                        => 1,
+                        'role'                      => 1,
+                        'login'                     => 'aLogin',
+                        'name'                      => 'Marshall A. Davis',
+                        'lang'                      => 'en',
+                        'color'                     => '#dddddd',
+                        'dashboard'                 => [],
+                        'interval'                  => 2000,
+                        'rooms'                     => [
                             0,
                         ],
                         'expert_view'               => true,
@@ -167,15 +166,15 @@ class ZwaveTest extends TestCase
                     [],
                     \GuzzleHttp\json_encode([
                         'data' => (object) [
-                            'id'        => 1,
-                            'role'      => 1,
-                            'login'     => 'aLogin',
-                            'name'      => 'Marshall A. Davis',
-                            'lang'      => 'en',
-                            'color'     => '#dddddd',
-                            'dashboard' => [],
-                            'interval'  => 2000,
-                            'rooms'     => [
+                            'id'                        => 1,
+                            'role'                      => 1,
+                            'login'                     => 'aLogin',
+                            'name'                      => 'Marshall A. Davis',
+                            'lang'                      => 'en',
+                            'color'                     => '#dddddd',
+                            'dashboard'                 => [],
+                            'interval'                  => 2000,
+                            'rooms'                     => [
                                 0,
                             ],
                             'expert_view'               => true,
@@ -218,21 +217,21 @@ class ZwaveTest extends TestCase
                             'updateTime'       => 1561091908,
                             'devices'          => [
                                 (object) [
-                                    'creationTime' => 1560912400,
-                                    'creatorId'    => 12,
-                                    'customIcons'  => (object) [],
-                                    'deviceType'   => 'toggleButton',
-                                    'h'            => -1891043069,
-                                    'hasHistory'   => false,
-                                    'id'           => 'MailNotifier_12',
-                                    'location'     => 0,
-                                    'metrics'      => (object) [
+                                    'creationTime'       => 1560912400,
+                                    'creatorId'          => 12,
+                                    'customIcons'        => (object) [],
+                                    'deviceType'         => 'toggleButton',
+                                    'h'                  => -1891043069,
+                                    'hasHistory'         => false,
+                                    'id'                 => 'MailNotifier_12',
+                                    'location'           => 0,
+                                    'metrics'            => (object) [
                                         'level'   => 'on',
                                         'title'   => 'Send Email Notification',
                                         'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
                                         'message' => '',
                                     ],
-                                    'order' => (object) [
+                                    'order'              => (object) [
                                         'rooms'     => 0,
                                         'elements'  => 0,
                                         'dashboard' => 0,
@@ -243,24 +242,24 @@ class ZwaveTest extends TestCase
                                         'testing',
                                         'mocked',
                                     ],
-                                    'visibility' => true,
-                                    'updateTime' => 1560976328,
+                                    'visibility'         => true,
+                                    'updateTime'         => 1560976328,
                                 ],
                                 (object) [
-                                    'creationTime' => 1560976328,
-                                    'creatorId'    => 5,
-                                    'customIcons'  => (object) [],
-                                    'deviceType'   => 'text',
-                                    'h'            => -1261400328,
-                                    'hasHistory'   => false,
-                                    'id'           => 'InfoWidget_5_Int',
-                                    'location'     => 0,
-                                    'metrics'      => (object) [
+                                    'creationTime'       => 1560976328,
+                                    'creatorId'          => 5,
+                                    'customIcons'        => (object) [],
+                                    'deviceType'         => 'text',
+                                    'h'                  => -1261400328,
+                                    'hasHistory'         => false,
+                                    'id'                 => 'InfoWidget_5_Int',
+                                    'location'           => 0,
+                                    'metrics'            => (object) [
                                         'title' => 'Dear Expert User',
                                         'text'  => '<div style="text-align: center;">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>',
                                         'icon'  => 'app/img/logo-z-wave-z-only.png',
                                     ],
-                                    'order' => (object) [
+                                    'order'              => (object) [
                                         'rooms'     => 0,
                                         'elements'  => 0,
                                         'dashboard' => 0,
@@ -300,8 +299,7 @@ class ZwaveTest extends TestCase
                 return $isProperFile && $correctToken;
             })
             ->once()
-            ->andReturnTrue()
-        ;
+            ->andReturnTrue();
 
         $zwave = new Zwave($this->getMockClient(
             [
@@ -310,15 +308,15 @@ class ZwaveTest extends TestCase
                     [],
                     \GuzzleHttp\json_encode([
                         'data' => (object) [
-                            'id'        => 1,
-                            'role'      => 1,
-                            'login'     => 'aLogin',
-                            'name'      => 'Marshall A. Davis',
-                            'lang'      => 'en',
-                            'color'     => '#dddddd',
-                            'dashboard' => [],
-                            'interval'  => 2000,
-                            'rooms'     => [
+                            'id'                        => 1,
+                            'role'                      => 1,
+                            'login'                     => 'aLogin',
+                            'name'                      => 'Marshall A. Davis',
+                            'lang'                      => 'en',
+                            'color'                     => '#dddddd',
+                            'dashboard'                 => [],
+                            'interval'                  => 2000,
+                            'rooms'                     => [
                                 0,
                             ],
                             'expert_view'               => true,
@@ -353,15 +351,15 @@ class ZwaveTest extends TestCase
                     [],
                     \GuzzleHttp\json_encode([
                         'data' => (object) [
-                            'id'        => 1,
-                            'role'      => 1,
-                            'login'     => 'aLogin',
-                            'name'      => 'Marshall A. Davis',
-                            'lang'      => 'en',
-                            'color'     => '#dddddd',
-                            'dashboard' => [],
-                            'interval'  => 2000,
-                            'rooms'     => [
+                            'id'                        => 1,
+                            'role'                      => 1,
+                            'login'                     => 'aLogin',
+                            'name'                      => 'Marshall A. Davis',
+                            'lang'                      => 'en',
+                            'color'                     => '#dddddd',
+                            'dashboard'                 => [],
+                            'interval'                  => 2000,
+                            'rooms'                     => [
                                 0,
                             ],
                             'expert_view'               => true,
@@ -401,8 +399,7 @@ class ZwaveTest extends TestCase
                 return $isProperFile && $correctToken;
             })
             ->once()
-            ->andReturnTrue()
-        ;
+            ->andReturnTrue();
 
         $zwave = new Zwave($this->getMockClient(
             [
@@ -411,15 +408,15 @@ class ZwaveTest extends TestCase
                     [],
                     \GuzzleHttp\json_encode([
                         'data' => (object) [
-                            'id'        => 1,
-                            'role'      => 1,
-                            'login'     => 'aLogin',
-                            'name'      => 'Marshall A. Davis',
-                            'lang'      => 'en',
-                            'color'     => '#dddddd',
-                            'dashboard' => [],
-                            'interval'  => 2000,
-                            'rooms'     => [
+                            'id'                        => 1,
+                            'role'                      => 1,
+                            'login'                     => 'aLogin',
+                            'name'                      => 'Marshall A. Davis',
+                            'lang'                      => 'en',
+                            'color'                     => '#dddddd',
+                            'dashboard'                 => [],
+                            'interval'                  => 2000,
+                            'rooms'                     => [
                                 0,
                             ],
                             'expert_view'               => true,
@@ -464,8 +461,7 @@ class ZwaveTest extends TestCase
                 return $isProperFile && $correctToken;
             })
             ->once()
-            ->andReturnTrue()
-        ;
+            ->andReturnTrue();
 
         $zwave = new Zwave($this->getMockClient(
             [
@@ -474,15 +470,15 @@ class ZwaveTest extends TestCase
                     [],
                     \GuzzleHttp\json_encode([
                         'data' => (object) [
-                            'id'        => 1,
-                            'role'      => 1,
-                            'login'     => 'aLogin',
-                            'name'      => 'Marshall A. Davis',
-                            'lang'      => 'en',
-                            'color'     => '#dddddd',
-                            'dashboard' => [],
-                            'interval'  => 2000,
-                            'rooms'     => [
+                            'id'                        => 1,
+                            'role'                      => 1,
+                            'login'                     => 'aLogin',
+                            'name'                      => 'Marshall A. Davis',
+                            'lang'                      => 'en',
+                            'color'                     => '#dddddd',
+                            'dashboard'                 => [],
+                            'interval'                  => 2000,
+                            'rooms'                     => [
                                 0,
                             ],
                             'expert_view'               => true,
@@ -535,21 +531,21 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
         $deviceOne = (object) [
-            'creationTime' => 1560912400,
-            'creatorId'    => 12,
-            'customIcons'  => (object) [],
-            'deviceType'   => 'toggleButton',
-            'h'            => -1891043069,
-            'hasHistory'   => false,
-            'id'           => 'MailNotifier_12',
-            'location'     => 0,
-            'metrics'      => (object) [
+            'creationTime'       => 1560912400,
+            'creatorId'          => 12,
+            'customIcons'        => (object) [],
+            'deviceType'         => 'toggleButton',
+            'h'                  => -1891043069,
+            'hasHistory'         => false,
+            'id'                 => 'MailNotifier_12',
+            'location'           => 0,
+            'metrics'            => (object) [
                 'level'   => 'on',
                 'title'   => 'Send Email Notification',
                 'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
                 'message' => '',
             ],
-            'order' => (object) [
+            'order'              => (object) [
                 'rooms'     => 0,
                 'elements'  => 0,
                 'dashboard' => 0,
@@ -560,24 +556,24 @@ class ZwaveTest extends TestCase
                 'testing',
                 'mocked',
             ],
-            'visibility' => true,
-            'updateTime' => 1560976328,
+            'visibility'         => true,
+            'updateTime'         => 1560976328,
         ];
         $deviceTwo = (object) [
-            'creationTime' => 1560976328,
-            'creatorId'    => 5,
-            'customIcons'  => (object) [],
-            'deviceType'   => 'text',
-            'h'            => -1261400328,
-            'hasHistory'   => false,
-            'id'           => 'InfoWidget_5_Int',
-            'location'     => 0,
-            'metrics'      => (object) [
+            'creationTime'       => 1560976328,
+            'creatorId'          => 5,
+            'customIcons'        => (object) [],
+            'deviceType'         => 'text',
+            'h'                  => -1261400328,
+            'hasHistory'         => false,
+            'id'                 => 'InfoWidget_5_Int',
+            'location'           => 0,
+            'metrics'            => (object) [
                 'title' => 'Dear Expert User',
                 'text'  => '<div style="text-align: center;">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>',
                 'icon'  => 'app/img/logo-z-wave-z-only.png',
             ],
-            'order' => (object) [
+            'order'              => (object) [
                 'rooms'     => 0,
                 'elements'  => 0,
                 'dashboard' => 0,
@@ -595,7 +591,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'structureChanged' => false,
                             'updateTime'       => 1561091908,
                             'devices'          => [
@@ -623,8 +619,7 @@ class ZwaveTest extends TestCase
                 ->each(function ($value, string $attribute) use ($deviceOne, $deviceTwo) {
                     $attribute = Str::camel($attribute);
                     $this->assertTrue(($deviceOne->{$attribute} ?? null) === $value || ($deviceTwo->{$attribute} ?? null) === $value);
-                })
-            ;
+                });
         });
     }
 
@@ -635,22 +630,22 @@ class ZwaveTest extends TestCase
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
         Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
         $deviceOne = (object) [
-            'creationTime' => 1560912400,
-            'creatorId'    => 12,
-            'customIcons'  => (object) [],
-            'deviceType'   => 'toggleButton',
-            'h'            => -1891043069,
-            'hasHistory'   => false,
-            'id'           => 'MailNotifier_12',
-            'location'     => 0,
-            'metrics'      => (object) [
+            'creationTime'       => 1560912400,
+            'creatorId'          => 12,
+            'customIcons'        => (object) [],
+            'deviceType'         => 'toggleButton',
+            'h'                  => -1891043069,
+            'hasHistory'         => false,
+            'id'                 => 'MailNotifier_12',
+            'location'           => 0,
+            'metrics'            => (object) [
                 'level'   => 'on',
                 'title'   => 'Send Email Notification',
                 'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
                 'message' => '',
             ],
-            'nodeId' => 2,
-            'order'  => (object) [
+            'nodeId'             => 2,
+            'order'              => (object) [
                 'rooms'     => 0,
                 'elements'  => 0,
                 'dashboard' => 0,
@@ -661,25 +656,25 @@ class ZwaveTest extends TestCase
                 'testing',
                 'mocked',
             ],
-            'visibility' => true,
-            'updateTime' => 1560976328,
+            'visibility'         => true,
+            'updateTime'         => 1560976328,
         ];
         $deviceTwo = (object) [
-            'creationTime' => 1560976328,
-            'creatorId'    => 5,
-            'customIcons'  => (object) [],
-            'deviceType'   => 'text',
-            'h'            => -1261400328,
-            'hasHistory'   => false,
-            'id'           => 'InfoWidget_5_Int',
-            'location'     => 0,
-            'metrics'      => (object) [
+            'creationTime'       => 1560976328,
+            'creatorId'          => 5,
+            'customIcons'        => (object) [],
+            'deviceType'         => 'text',
+            'h'                  => -1261400328,
+            'hasHistory'         => false,
+            'id'                 => 'InfoWidget_5_Int',
+            'location'           => 0,
+            'metrics'            => (object) [
                 'title' => 'Dear Expert User',
                 'text'  => '<div style="text-align: center;">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>',
                 'icon'  => 'app/img/logo-z-wave-z-only.png',
             ],
-            'nodeId' => 3,
-            'order'  => (object) [
+            'nodeId'             => 3,
+            'order'              => (object) [
                 'rooms'     => 0,
                 'elements'  => 0,
                 'dashboard' => 0,
@@ -697,7 +692,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'structureChanged' => false,
                             'updateTime'       => 1561091908,
                             'devices'          => [
@@ -774,6 +769,9 @@ class ZwaveTest extends TestCase
 
     public function testReturnsFalseIfNoCommands(): void
     {
+        Storage::shouldReceive('disk')->with('local')->andReturnSelf();
+        Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
+        Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
         $device = factory(Device::class)->create();
 
         static::assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
@@ -781,17 +779,35 @@ class ZwaveTest extends TestCase
 
     public function testsRunsCommands(): void
     {
+        $endpoint = 'api/v1/test';
+        $history = [];
+        Storage::shouldReceive('disk')->with('local')->andReturnSelf();
+        Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
+        Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
         $device = factory(Device::class)->create([
             'device_type' => 'switchBinary',
         ]);
-        App::bind(Basic::class, function () {
+        App::bind(SwitchBinary::class, function () use ($endpoint) {
             $mockBasics = Mockery::mock(SwitchBinary::class);
-            $mockBasics->shouldReceive('color')->with([1, 2, 3])->once()->andReturnTrue();
+            $mockBasics->shouldReceive('color')->with(1, 2, 3)->once()->andReturn($endpoint);
 
             return $mockBasics;
         });
 
-        static::assertFalse((new Zwave($this->getMockClient()))->command($device, 'color', [1, 2, 3]));
+        static::assertTrue((new Zwave($this->getMockClient(
+            [
+                new Response(
+                    200,
+                    [],
+                    \GuzzleHttp\json_encode([
+                        'code' => 200,
+                    ])
+                ),
+            ],
+            $history
+        )))
+            ->command($device, 'color', [1, 2, 3]));
+        static::assertEquals($endpoint, $history[0]['request']->getUri()->getPath());
     }
 
     public function storageProvider(): array

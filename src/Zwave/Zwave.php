@@ -66,10 +66,9 @@ class Zwave
      * @param null|string $withPassword
      * @param bool        $andStoreToken
      *
-     * @throws NetworkFailure
-     * @throws NoToken
-     *
      * @return bool
+     * @throws NoToken
+     * @throws NetworkFailure
      */
     public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
     {
@@ -114,14 +113,23 @@ class Zwave
 
     public function command(Device $device, string $to, array $with): bool
     {
-        return $this->run($to, Commands::buildFor($device), $with);
+        $uri = $this->endpointFor($to, Commands::buildFor($device), $with);
+
+        if ($uri) {
+            $response = $this->send(new Request(
+                    'GET',
+                    $uri
+                ))->getCode() === 200;
+        }
+
+        return $response ?? false;
     }
 
-    protected function run(string $command, Commands $ofType, array $given): bool
+    protected function endpointFor(string $command, Commands $ofType, array $given): string
     {
-        return (method_exists($ofType, $command) && \is_callable([$ofType, $command]))
+        return (is_callable([$ofType, $command]))
             ? $ofType->{$command}(...$given)
-            : false;
+            : '';
     }
 
     protected function commandsFor(Device $device): Commands
@@ -175,10 +183,9 @@ class Zwave
                 return $toAttributes->get(Str::camel($attribute));
             })
             ->reject(function ($value): bool {
-                return \is_null($value);
+                return is_null($value);
             })
-            ->toArray()
-        ;
+            ->toArray();
     }
 
     protected function save(Collection $models): bool
@@ -187,12 +194,11 @@ class Zwave
             $saved = DB::transaction(function () use ($models) {
                 return $models->reduce(function (bool $saved, Collection $modelSet) {
                     return $saved && $modelSet->reduce(function (bool $saved, Model $model) {
-                        return $saved && $model->save();
-                    }, true);
+                            return $saved && $model->save();
+                        }, true);
                 }, true);
             });
         } catch (Throwable $e) {
-            dd($e);
             $saved = false;
         }
 
@@ -234,10 +240,9 @@ class Zwave
      * @param RequestInterface $request
      * @param bool             $withoutToken
      *
-     * @throws NetworkFailure
-     * @throws NoToken
-     *
      * @return Response
+     * @throws NoToken
+     * @throws NetworkFailure
      */
     protected function send(RequestInterface $request, bool $withoutToken = false): Response
     {
