@@ -28,6 +28,10 @@ $config = PhpCsFixer\Config::create()
         'php_unit_internal_class'             => false,
         'multiline_comment_opening_closing'   => false,
         'single_line_comment_style'           => false,
+        'native_function_invocation'          => false,
+        'no_break_comment'                    => [
+            'comment_text' => 'Intentional fall-through',
+        ],
     ])
     ->setFinder($finder);
 
