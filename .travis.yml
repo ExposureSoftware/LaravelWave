@@ -4,7 +4,7 @@ php:
 install:
   - composer install
 script:
-  #  - ./scripts/codesniff.sh
+  - ./scripts/codesniff.sh
   - vendor/bin/phpunit
 notifications:
   slack: exposuresoftware:rejbBtgoybEFtlOpR8FneKKQ
