@@ -118,7 +118,7 @@ $config = PhpCsFixer\Config::create()
         'no_php4_constructor'                         => true,
         'no_short_bool_cast'                          => true,
         'no_short_echo_tag'                           => true,
-        'no_singleline_whitespace_before_semicolon'   => true,
+        'no_singleline_whitespace_before_semicolons'  => true,
         'no_spaces_after_function_name'               => true,
         'no_spaces_around_offset'                     => [
             'positions' => [
@@ -127,8 +127,8 @@ $config = PhpCsFixer\Config::create()
             ],
         ],
         'no_spaces_inside_parenthesis'                => true,
-        'no_trailing_comma_in_list_calls'             => true,
-        'no_trailing_comma_in_singeline_array'        => true,
+        'no_trailing_comma_in_list_call'              => true,
+        'no_trailing_comma_in_singleline_array'       => true,
         'no_trailing_whitespace'                      => true,
         'no_trailing_whitespace_in_comment'           => true,
         'no_unset_cast'                               => true,
@@ -169,10 +169,10 @@ $config = PhpCsFixer\Config::create()
         'single_quote'                                => [
             'strings_containing_single_quote_chars' => true,
         ],
-        'single_trait_per_statement'                  => true,
+        'single_trait_insert_per_statement'           => true,
         'standardize_increment'                       => true,
         'standardize_not_equals'                      => true,
-        'strict_comparisons'                          => true,
+        'strict_comparison'                           => true,
         'switch_case_semicolon_to_colon'              => true,
         'switch_case_space'                           => true,
         'ternary_operator_spaces'                     => true,
