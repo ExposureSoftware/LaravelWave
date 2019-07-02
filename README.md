@@ -138,3 +138,9 @@ hasToken() | `bool` | Returns `true` or `false` depending on if the current inst
 login(_'admin'_, _'secret'_, _true_) | `bool` | Logs in with the given credentials. If none are provided the credentials from package configuration are used. The last parameter represents whether or not to store the token.
 listDevices(_true_) | `Illuminate\Support\Collection` | Returns a collection of all the devices known to the server. If passed `false` these will not be stored in the database.
 update(_device_) | `ExposureSoftware\LaravelWave\Device` | Returns the `Device` with updated attributes to reflect current state.
+
+# Sponsorship
+If you would like to provide funding for this project please use any of the methods listed below.
+
+## Tidelift
+[Tidelift](https://tidelift.com/subscription/pkg/packagist-exposuresoftware-laravel-zway?utm_source=packagist-exposuresoftware-laravel-zway&utm_medium=referral&utm_campaign=readme) gives software development teams a single source for purchasing and maintaining their software, with professional grade assurances from the experts who know it best, while seamlessly integrating with existing tools.
