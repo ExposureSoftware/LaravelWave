@@ -807,7 +807,7 @@ class ZwaveTest extends TestCase
             $history
         )))
             ->command($device, 'color', [1, 2, 3]));
-        static::assertEquals($endpoint, $history[0]['request']->getUri()->getPath());
+        static::assertSame($endpoint, $history[0]['request']->getUri()->getPath());
     }
 
     public function storageProvider(): array

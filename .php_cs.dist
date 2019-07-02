@@ -7,30 +7,29 @@ $finder = PhpCsFixer\Finder::create()
 $config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PHP56Migration'                     => true,
-        '@PHPUnit60Migration:risky'           => true,
-        '@PhpCsFixer'                         => true,
-        '@PhpCsFixer:risky'                   => true,
-        'is_null'                             => false,
-        'not_operator_with_successor_space'   => false,
-        'phpdoc_summary'                      => false,
-        'binary_operator_spaces'              => [
-            'operators' => [
-                '=>' => 'align_single_space_minimal',
-            ],
-        ],
-        'list_syntax'                         => [
+        '@PHP56Migration'                        => true,
+        '@PHPUnit60Migration:risky'              => true,
+        '@PhpCsFixer'                            => true,
+        '@PhpCsFixer:risky'                      => true,
+        'is_null'                                => false,
+        'not_operator_with_successor_space'      => false,
+        'phpdoc_summary'                         => false,
+        'binary_operator_spaces'                 => false,
+        'list_syntax'                            => [
             'syntax' => 'long',
         ],
-        'final_internal_class'                => false,
-        'final_class'                         => false,
-        'php_unit_test_class_requires_covers' => false,
-        'php_unit_internal_class'             => false,
-        'multiline_comment_opening_closing'   => false,
-        'single_line_comment_style'           => false,
-        'native_function_invocation'          => false,
-        'no_break_comment'                    => [
+        'final_internal_class'                   => false,
+        'final_class'                            => false,
+        'php_unit_test_class_requires_covers'    => false,
+        'php_unit_internal_class'                => false,
+        'multiline_comment_opening_closing'      => false,
+        'single_line_comment_style'              => false,
+        'native_function_invocation'             => false,
+        'no_break_comment'                       => [
             'comment_text' => 'Intentional fall-through',
+        ],
+        'multiline_whitespace_before_semicolons' => [
+            'strategy' => 'no_multi_line',
         ],
     ])
     ->setFinder($finder);
