@@ -20,7 +20,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
         $this->artisan('migrate');
 
-        $this->withFactories(__DIR__.'/factories');
+        $this->withFactories(__DIR__ . '/factories');
     }
 
     protected function getPackageProviders($app)
