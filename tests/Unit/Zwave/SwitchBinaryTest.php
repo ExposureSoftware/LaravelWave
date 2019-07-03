@@ -19,7 +19,7 @@ class SwitchBinaryTest extends TestCase
         ]);
         /** @var SwitchBinary $command */
         $command = Commands::buildFor($device);
-        static::assertSame("devices/{$device->device_id}/command/on", $command->on());
+        static::assertSame("devices/{$device->id}/command/on", $command->on());
     }
 
     public function testOff(): void
@@ -29,6 +29,6 @@ class SwitchBinaryTest extends TestCase
         ]);
         /** @var SwitchBinary $command */
         $command = Commands::buildFor($device);
-        static::assertSame("devices/{$device->device_id}/command/off", $command->off());
+        static::assertSame("devices/{$device->id}/command/off", $command->off());
     }
 }
