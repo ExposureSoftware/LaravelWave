@@ -133,13 +133,23 @@ zway:fetch-devices | Retrieve devices via the API.
 Parameters listed are examples and those in _italics_ are optional.
 
 Method | Returns | Description
---------------------|---------------------------------|----
+-------------------------------------------|---------------------------------|----
 hasToken() | `bool` | Returns `true` or `false` depending on if the current instance has a token.
 login(_'admin'_, _'secret'_, _true_) | `bool` | Logs in with the given credentials. If none are provided the credentials from package configuration are used. The last parameter represents whether or not to store the token.
 listDevices(_true_) | `Illuminate\Support\Collection` | Returns a collection of all the devices known to the server. If passed `false` these will not be stored in the database.
 update(_device_) | `ExposureSoftware\LaravelWave\Device` | Returns the `Device` with updated attributes to reflect current state.
 command(_device_, _command_, _parameters_) | `bool` | Runs a command on the given device with the provided parameters. See the "Virtual Device Types" section of the [documentation](https://zwayhomeautomation.docs.apiary.io/#reference/devices/virtual-device) for commands supported per device*.
 \* Only `switchBinary` is supported in this version. 
+
+## Events
+Events are dispatched during different operations so that actions may be taken in response.
+
+All events are in the `ExposureSoftware\LaravelWave\Events` namespace.
+
+Event | Cause | Available Properties
+----------|----------|----------
+`CommandSent` | Set after a command has been sent to the Z-Way Server. | `string` _command_,<br>`ExposureSoftware\LaravelWave\Models\Device` _device_,<br>`bool` _successful_,<br>`array` _parameters_  
+
 
 # Sponsorship
 If you would like to provide funding for this project please use any of the methods listed below.

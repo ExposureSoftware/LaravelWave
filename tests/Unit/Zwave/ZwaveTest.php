@@ -11,11 +11,7 @@ use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Metric;
 use ExposureSoftware\LaravelWave\Zwave\Commands\SwitchBinary;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -822,13 +818,5 @@ class ZwaveTest extends TestCase
                 true,
             ],
         ];
-    }
-
-    private function getMockClient(array $responses = [], array &$history = []): Client
-    {
-        $handlerStack = HandlerStack::create(new MockHandler($responses));
-        $handlerStack->push(Middleware::history($history));
-
-        return new Client(['handler' => $handlerStack]);
     }
 }

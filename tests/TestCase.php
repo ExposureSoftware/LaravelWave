@@ -7,6 +7,10 @@ namespace Tests;
 
 use ExposureSoftware\LaravelWave\Facades\ZwaveFacade;
 use ExposureSoftware\LaravelWave\LaravelWaveProvider;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -31,5 +35,13 @@ class TestCase extends \Orchestra\Testbench\TestCase
         return [
             'Zwave' => ZwaveFacade::class,
         ];
+    }
+
+    protected function getMockClient(array $responses = [], array &$history = []): Client
+    {
+        $handlerStack = HandlerStack::create(new MockHandler($responses));
+        $handlerStack->push(Middleware::history($history));
+
+        return new Client(['handler' => $handlerStack]);
     }
 }

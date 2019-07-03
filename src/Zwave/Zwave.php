@@ -5,6 +5,7 @@
 
 namespace ExposureSoftware\LaravelWave\Zwave;
 
+use ExposureSoftware\LaravelWave\Events\CommandSent;
 use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
@@ -120,6 +121,8 @@ class Zwave
                     'GET',
                     $uri
                 ))->getCode() === 200;
+
+            event(new CommandSent($to, $device, $response));
         }
 
         return $response ?? false;
