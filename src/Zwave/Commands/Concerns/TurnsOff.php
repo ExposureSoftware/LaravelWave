@@ -9,6 +9,6 @@ trait TurnsOff
 {
     public function off(): string
     {
-        return "devices/{$this->device->id}/command/off";
+        return "v1/devices/{$this->device->id}/command/off";
     }
 }
