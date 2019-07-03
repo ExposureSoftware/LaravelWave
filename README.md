@@ -144,3 +144,9 @@ If you would like to provide funding for this project please use any of the meth
 
 ## Tidelift
 [Tidelift](https://tidelift.com/subscription/pkg/packagist-exposuresoftware-laravel-zway?utm_source=packagist-exposuresoftware-laravel-zway&utm_medium=referral&utm_campaign=readme) gives software development teams a single source for purchasing and maintaining their software, with professional grade assurances from the experts who know it best, while seamlessly integrating with existing tools.
+
+# Security Vulnerabilities
+
+ To report a security vulnerability, please use the
+[Tidelift security contact](https://tidelift.com/security).
+Tidelift will coordinate the fix and disclosure.
