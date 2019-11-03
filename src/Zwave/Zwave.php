@@ -147,6 +147,10 @@ class Zwave
 
         $devices->each(function (stdClass $attributes) use ($deviceModels, $metricModels): void {
             $device = Device::first(['id' => $attributes->id]) ?? $this->device(collect((array) $attributes));
+            Log::debug(implode(' ', [
+                'Device record',
+                $device->exists ? 'found.' : 'created.',
+            ]));
             $deviceModels->push($device);
             $metricModels->push($device->metrics ?? $this->metrics($device, collect((array) $attributes->metrics)));
         });
@@ -159,6 +163,7 @@ class Zwave
 
     protected function metrics(Device $for, Collection $from): Metric
     {
+        Log::debug("Creating new metrics record for {$for}.");
         $metric = new Metric([
             'device_id' => $for->id,
         ]);
