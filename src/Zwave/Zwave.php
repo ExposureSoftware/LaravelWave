@@ -148,7 +148,8 @@ class Zwave
         $devices->each(function (stdClass $attributes) use ($deviceModels, $metricModels): void {
             $device = Device::first(['id' => $attributes->id]) ?? $this->device(collect((array) $attributes));
             Log::debug(implode(' ', [
-                'Device record',
+                'Device record for ID',
+                $attributes->id,
                 $device->exists ? 'found.' : 'created.',
             ]));
             $deviceModels->push($device);
