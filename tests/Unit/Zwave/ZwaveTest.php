@@ -710,6 +710,144 @@ class ZwaveTest extends TestCase
         static::assertCount(2, Device::all());
     }
 
+    public function testDevicesHaveCorrectAttributes(): void
+    {
+        $history = [];
+        Storage::shouldReceive('disk')->with('local')->andReturnSelf();
+        Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
+        Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
+        $deviceOne = [
+            'creationTime'       => 1560912400,
+            'creatorId'          => 12,
+            'customIcons'        => (object) [],
+            'deviceType'         => 'toggleButton',
+            'h'                  => -1891043069,
+            'hasHistory'         => false,
+            'id'                 => 'MailNotifier_12',
+            'location'           => 0,
+            'metrics'            => (object) [
+                'level'   => 'on',
+                'title'   => 'Send Email Notification',
+                'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
+                'message' => '',
+            ],
+            'nodeId'             => 2,
+            'order'              => (object) [
+                'rooms'     => 0,
+                'elements'  => 0,
+                'dashboard' => 0,
+            ],
+            'permanently_hidden' => false,
+            'probeType'          => 'notification_email',
+            'tags'               => [
+                'testing',
+                'mocked',
+            ],
+            'visibility'         => true,
+            'updateTime'         => 1560976328,
+        ];
+
+        $zwave = new Zwave($this->getMockClient(
+            [
+                new Response(
+                    200,
+                    [],
+                    \GuzzleHttp\json_encode([
+                        'data'    => (object) [
+                            'structureChanged' => false,
+                            'updateTime'       => 1561091908,
+                            'devices'          => [
+                                $deviceOne,
+                            ],
+                        ],
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
+                    ])
+                ),
+            ],
+            $history
+        ));
+
+        $zwave->listDevices();
+        /** @var Device $device */
+        $device = Device::first();
+
+        $this->assertInstanceOf(Device::class, $device);
+        foreach ($device->getAttributes() as $attribute => $value) {
+            $this->assertEquals(
+                $value,
+                $device->{$attribute},
+                "For attribute {$attribute}."
+            );
+        }
+    }
+
+    public function testDeviceSavingLogsErrors(): void
+    {
+        Log::shouldReceive('debug');
+        Log::shouldReceive('error')->once();
+
+        $history = [];
+        Storage::shouldReceive('disk')->with('local')->andReturnSelf();
+        Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
+        Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
+        $deviceOne = [
+            'creationTime'       => null,
+            'creatorId'          => 12,
+            'customIcons'        => (object) [],
+            'deviceType'         => 'toggleButton',
+            'h'                  => -1891043069,
+            'hasHistory'         => false,
+            'id'                 => 'MailNotifier_12',
+            'location'           => 0,
+            'metrics'            => (object) [
+                'level'   => 'on',
+                'title'   => 'Send Email Notification',
+                'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
+                'message' => '',
+            ],
+            'nodeId'             => 2,
+            'order'              => (object) [
+                'rooms'     => 0,
+                'elements'  => 0,
+                'dashboard' => 0,
+            ],
+            'permanently_hidden' => false,
+            'probeType'          => 'notification_email',
+            'tags'               => [
+                'testing',
+                'mocked',
+            ],
+            'visibility'         => true,
+            'updateTime'         => 1560976328,
+        ];
+
+        $zwave = new Zwave($this->getMockClient(
+            [
+                new Response(
+                    200,
+                    [],
+                    \GuzzleHttp\json_encode([
+                        'data'    => (object) [
+                            'structureChanged' => false,
+                            'updateTime'       => 1561091908,
+                            'devices'          => [
+                                $deviceOne,
+                            ],
+                        ],
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
+                    ])
+                ),
+            ],
+            $history
+        ));
+
+        $zwave->listDevices();
+    }
+
     public function testUpdateDevice(): void
     {
         $history = [];

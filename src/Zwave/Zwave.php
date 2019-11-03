@@ -194,14 +194,16 @@ class Zwave
     protected function save(Collection $models): bool
     {
         try {
-            $saved = DB::transaction(function () use ($models) {
-                return $models->reduce(function (bool $saved, Collection $modelSet) {
-                    return $saved && $modelSet->reduce(function (bool $saved, Model $model) {
-                            return $saved && $model->save();
-                        }, true);
-                }, true);
+            DB::transaction(function () use ($models) {
+                return $models->each(function (Collection $modelSet) {
+                    $modelSet->each(function (Model $model) {
+                        $model->save();
+                    });
+                });
             });
+            $saved = true;
         } catch (Throwable $e) {
+            Log::error("Could not save devices: {$e->getMessage()}");
             $saved = false;
         }
 
