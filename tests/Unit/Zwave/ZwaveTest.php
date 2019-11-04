@@ -5,6 +5,7 @@
 
 namespace Tests\Unit\Zwave;
 
+use Carbon\Carbon;
 use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
@@ -105,7 +106,7 @@ class ZwaveTest extends TestCase
                 200,
                 [],
                 \GuzzleHttp\json_encode([
-                    'data' => (object) [
+                    'data'    => (object) [
                         'id'                        => 1,
                         'role'                      => 1,
                         'login'                     => 'aLogin',
@@ -161,7 +162,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'id'                        => 1,
                             'role'                      => 1,
                             'login'                     => 'aLogin',
@@ -208,7 +209,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'structureChanged' => false,
                             'updateTime'       => 1561091908,
                             'devices'          => [
@@ -303,7 +304,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'id'                        => 1,
                             'role'                      => 1,
                             'login'                     => 'aLogin',
@@ -346,7 +347,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'id'                        => 1,
                             'role'                      => 1,
                             'login'                     => 'aLogin',
@@ -403,7 +404,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'id'                        => 1,
                             'role'                      => 1,
                             'login'                     => 'aLogin',
@@ -465,7 +466,7 @@ class ZwaveTest extends TestCase
                     200,
                     [],
                     \GuzzleHttp\json_encode([
-                        'data' => (object) [
+                        'data'    => (object) [
                             'id'                        => 1,
                             'role'                      => 1,
                             'login'                     => 'aLogin',
@@ -846,6 +847,84 @@ class ZwaveTest extends TestCase
         ));
 
         $zwave->listDevices();
+    }
+
+    public function testSavesExistingDevice(): void
+    {
+        $history = [];
+        Storage::shouldReceive('disk')->with('local')->andReturnSelf();
+        Storage::shouldReceive('exists')->with('zwave_token')->andReturnTrue();
+        Storage::shouldReceive('get')->with('zwave_token')->andReturn(encrypt('token'));
+        $device = new Device([
+            'creation_time'      => Carbon::now(),
+            'creator_id'         => 1,
+            'custom_icons'       => [],
+            'device_type'        => 'toggleButton',
+            'has_history'        => false,
+            'id'                 => 'MailNotifier_12',
+            'location'           => 0,
+            'permanently_hidden' => false,
+            'probeType'          => 'test',
+            'visibility'         => true,
+            'update_time'        => Carbon::now(),
+        ]);
+        $device->saveOrFail();
+        $deviceOne = (object) [
+            'creationTime'       => 1560912400,
+            'creatorId'          => 12,
+            'customIcons'        => (object) [],
+            'deviceType'         => 'toggleButton',
+            'h'                  => -1891043069,
+            'hasHistory'         => false,
+            'id'                 => 'MailNotifier_12',
+            'location'           => 0,
+            'metrics'            => (object) [
+                'level'   => 'on',
+                'title'   => 'Send Email Notification',
+                'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
+                'message' => '',
+            ],
+            'order'              => (object) [
+                'rooms'     => 0,
+                'elements'  => 0,
+                'dashboard' => 0,
+            ],
+            'permanently_hidden' => false,
+            'probeType'          => 'notification_email',
+            'tags'               => [
+                'testing',
+                'mocked',
+            ],
+            'visibility'         => true,
+            'updateTime'         => 1560976328,
+        ];
+
+        $zwave = new Zwave($this->getMockClient(
+            [
+                new Response(
+                    200,
+                    [],
+                    \GuzzleHttp\json_encode([
+                        'data'    => (object) [
+                            'structureChanged' => false,
+                            'updateTime'       => 1561091908,
+                            'devices'          => [
+                                $deviceOne,
+                            ],
+                        ],
+                        'code'    => 200,
+                        'message' => '200 OK',
+                        'error'   => null,
+                    ])
+                ),
+            ],
+            $history
+        ));
+
+        $zwave->listDevices(false);
+        $device->refresh();
+
+        $this->assertSame('test', $device->probeType);
     }
 
     public function testUpdateDevice(): void
