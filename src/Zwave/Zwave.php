@@ -70,10 +70,11 @@ class Zwave
      * @return bool
      * @throws NoToken
      * @throws NetworkFailure
+     * @noinspection CallableParameterUseCaseInTypeContextInspection
      */
     public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
     {
-        $as = $as ?? config('laravelwave.user');
+        $as = $as ?? config('laravelwave.user', '');
         $withPassword = $withPassword ?? config('laravelwave.password');
 
         $response = $this->send(
@@ -86,7 +87,7 @@ class Zwave
                     'password' => $withPassword,
                 ])
             ),
-            true
+            false
         );
         $this->token = $response->sid;
 
@@ -249,22 +250,30 @@ class Zwave
 
     /**
      * @param RequestInterface $request
-     * @param bool             $withoutToken
+     * @param bool             $withToken
      *
      * @return Response
      * @throws NoToken
      * @throws NetworkFailure
      */
-    protected function send(RequestInterface $request, bool $withoutToken = false): Response
+    protected function send(RequestInterface $request, bool $withToken = true): Response
     {
-        if (!$withoutToken && !$this->hasToken()) {
+        if ($withToken && !$this->hasToken()) {
             throw new NoToken();
         }
 
         try {
             return new Response($this->client->send($this->addHeadersTo($request)));
         } catch (GuzzleException $e) {
-            throw new NetworkFailure($e);
+            if ($e->getCode() !== 401) {
+                throw new NetworkFailure($e);
+            }
+
+            if ($withToken && !$this->login()) {
+                throw new NoToken();
+            }
+
+            return $this->send($request, $withToken);
         }
     }
 }

@@ -22,9 +22,11 @@
   "require": {
     "php": ">=7.1.3",
     "guzzlehttp/guzzle": "^6.3",
-    "doctrine/dbal": "^2.9"
+    "doctrine/dbal": "^2.9",
+    "ext-json": "*"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-master",
     "orchestra/testbench": "^3.5",
     "phpunit/phpunit": "^8.2",
     "fzaninotto/faker": "^1.8",
