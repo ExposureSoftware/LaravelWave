@@ -25,6 +25,7 @@ class FetchDevices extends Command
                 $exitCode = 1;
             }
         } catch (Throwable $throwable) {
+            throw $throwable;
             $this->error($throwable->getMessage());
             $exitCode = 1;
         } finally {
