@@ -60,7 +60,7 @@ $config = PhpCsFixer\Config::create()
         'fopen_flag_order'                            => true,
         'full_opening_tag'                            => true,
         'function_declaration'                        => [
-            'closure_function_spacing' => 'none',
+            'closure_function_spacing' => 'one',
         ],
         'function_typehint_space'                     => true,
         'implode_call'                                => true,
