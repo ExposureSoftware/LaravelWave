@@ -19,11 +19,7 @@ class FetchDevices extends Command
     public function handle(Zwave $zwave): int
     {
         try {
-            if ($zwave->hasToken() || $this->login($zwave)) {
-                $this->fetch($zwave);
-            } else {
-                $exitCode = 1;
-            }
+            $this->fetch($zwave);
         } catch (Throwable $throwable) {
             $this->error($throwable->getMessage());
             $exitCode = 1;

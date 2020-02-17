@@ -8,11 +8,6 @@ namespace Tests\Unit\Zwave;
 use Carbon\Carbon;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
 use Tests\TestCase;
@@ -23,8 +18,7 @@ class FetchDeviceTest extends TestCase
     {
         $this->app->bind(Zwave::class, function () {
             $mockZwave = Mockery::mock(Zwave::class);
-            $mockZwave->shouldReceive('hasToken')->once()->andReturnFalse();
-            $mockZwave->shouldReceive('login')->once()->andReturnFalse();
+            $mockZwave->shouldReceive('listDevices')->once()->andThrow(new \Exception('Test error.', 401));
 
             return $mockZwave;
         });
@@ -43,7 +37,6 @@ class FetchDeviceTest extends TestCase
                 'created_at' => Carbon::now()->addMinutes(5),
             ]));
             $mockZwave = Mockery::mock(Zwave::class);
-            $mockZwave->shouldReceive('hasToken')->once()->andReturnTrue();
             $mockZwave->shouldReceive('listDevices')
                 ->withNoArgs()
                 ->andReturn($devices);
@@ -53,101 +46,6 @@ class FetchDeviceTest extends TestCase
 
         $this->artisan('zway:fetch-devices')
             ->expectsOutput('8 devices reported. 3 new devices added.')
-            ->assertExitCode(0);
-    }
-
-    public function testUnauthorizedResponse(): void
-    {
-        $this->app->singleton(ClientInterface::class, static function () {
-            $deviceOne = (object) [
-                'creationTime' => Carbon::now()->addHour()->timestamp,
-                'creatorId'    => 12,
-                'customIcons'  => (object) [],
-                'deviceType'   => 'toggleButton',
-                'h'            => -1891043069,
-                'hasHistory'   => false,
-                'id'           => 'MailNotifier_12',
-                'location'     => 0,
-                'metrics'      => (object) [
-                    'level'   => 'on',
-                    'title'   => 'Send Email Notification',
-                    'icon'    => 'email',
-                    'message' => '',
-                ],
-                'order' => (object) [
-                    'rooms'     => 0,
-                    'elements'  => 0,
-                    'dashboard' => 0,
-                ],
-                'permanently_hidden' => false,
-                'probeType'          => 'notification_email',
-                'tags'               => [
-                    'testing',
-                    'mocked',
-                ],
-                'visibility' => true,
-                'updateTime' => 1560976328,
-            ];
-            $deviceTwo = (object) [
-                'creationTime' => Carbon::now()->subHour()->timestamp,
-                'creatorId'    => 5,
-                'customIcons'  => (object) [],
-                'deviceType'   => 'text',
-                'h'            => -1261400328,
-                'hasHistory'   => false,
-                'id'           => 'InfoWidget_5_Int',
-                'location'     => 0,
-                'metrics'      => (object) [
-                    'title' => 'Dear Expert User',
-                    'text'  => 'See link for details.',
-                    'icon'  => 'z',
-                ],
-                'order' => (object) [
-                    'rooms'     => 0,
-                    'elements'  => 0,
-                    'dashboard' => 0,
-                ],
-                'permanently_hidden' => false,
-                'probeType'          => '',
-                'tags'               => [],
-                'visibility'         => true,
-                'updateTime'         => 1560976328,
-            ];
-
-            return new Client([
-                'handler' => HandlerStack::create(new MockHandler([
-                    new Response(401),
-                    new Response(
-                        200,
-                        [
-                            'content-type' => 'application/json',
-                        ],
-                        json_encode([
-                            'data' => [
-                                'sid' => '123abc',
-                            ],
-                        ])
-                    ),
-                    new Response(
-                        200,
-                        [
-                            'content-type' => 'application/json',
-                        ],
-                        json_encode([
-                            'data' => [
-                                'devices' => [
-                                    $deviceOne,
-                                    $deviceTwo,
-                                ],
-                            ],
-                        ])
-                    ),
-                ])),
-            ]);
-        });
-
-        $this->artisan('zway:fetch-devices')
-            ->expectsOutput('2 devices reported. 0 new devices added.')
             ->assertExitCode(0);
     }
 }
