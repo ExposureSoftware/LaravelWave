@@ -265,11 +265,7 @@ class Zwave
         try {
             return new Response($this->client->send($this->addHeadersTo($request)));
         } catch (GuzzleException $e) {
-            if ($e->getCode() !== 401) {
-                throw new NetworkFailure($e);
-            }
-
-            if ($withToken && !$this->login()) {
+            if (!$withToken || !$this->login()) {
                 throw new NoToken();
             }
 
