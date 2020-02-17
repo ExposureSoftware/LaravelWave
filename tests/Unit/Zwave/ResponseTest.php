@@ -90,6 +90,7 @@ class ResponseTest extends TestCase
         ));
 
         static::assertInstanceOf(ZwaveResponse::class, $response);
+
         foreach ($data as $attribute => $value) {
             if (!\is_array($value)) {
                 static::assertSame($value, $response->{$attribute}, "Response attribute {$attribute} was not as expected.");
