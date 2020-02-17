@@ -44,7 +44,7 @@ class Zwave
 
     public function hasToken(): bool
     {
-        return \is_string($this->token);
+        return is_string($this->token);
     }
 
     public function listDevices(bool $andSave = true): Collection
@@ -189,11 +189,11 @@ class Zwave
     {
         return collect(Schema::getColumnListing($on->getTable()))
             ->flip()
-            ->map(function (int $value, string $attribute) use ($toAttributes) {
+            ->map(static function (int $value, string $attribute) use ($toAttributes) {
                 return $toAttributes->get(Str::camel($attribute));
             })
-            ->reject(function ($value): bool {
-                return is_null($value);
+            ->reject(static function ($value): bool {
+                return $value === null;
             })
             ->toArray();
     }
