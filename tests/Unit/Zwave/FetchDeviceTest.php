@@ -71,7 +71,7 @@ class FetchDeviceTest extends TestCase
                 'metrics'      => (object) [
                     'level'   => 'on',
                     'title'   => 'Send Email Notification',
-                    'icon'    => '/ZAutomation/api/v1/load/modulemedia/MailNotifier/icon.png',
+                    'icon'    => 'email',
                     'message' => '',
                 ],
                 'order' => (object) [
@@ -99,8 +99,8 @@ class FetchDeviceTest extends TestCase
                 'location'     => 0,
                 'metrics'      => (object) [
                     'title' => 'Dear Expert User',
-                    'text'  => '<div style="text-align: center;">If you still want to use ExpertUI please go, after you are successfully logged in, to <br><strong> Menu > Devices > Manage with ExpertUI </strong> <br> or call <br><strong> http =>//MYRASP =>8083/expert </strong><br> in your browser. <br> <br>You could hide or remove this widget in menu <br><strong>Apps > Active Tab</strong>. </div>',
-                    'icon'  => 'app/img/logo-z-wave-z-only.png',
+                    'text'  => 'See link for details.',
+                    'icon'  => 'z',
                 ],
                 'order' => (object) [
                     'rooms'     => 0,
