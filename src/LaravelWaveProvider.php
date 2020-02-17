@@ -8,6 +8,7 @@ namespace ExposureSoftware\LaravelWave;
 use ExposureSoftware\LaravelWave\Commands\FetchDevices;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelWaveProvider extends ServiceProvider
@@ -15,9 +16,9 @@ class LaravelWaveProvider extends ServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__.str_replace('/', \DIRECTORY_SEPARATOR, '/../laravel/config/laravelwave.php') => config_path('laravelwave.php'),
+            __DIR__ . str_replace('/', \DIRECTORY_SEPARATOR, '/../laravel/config/laravelwave.php') => config_path('laravelwave.php'),
         ]);
-        $this->loadMigrationsFrom(__DIR__.str_replace('/', \DIRECTORY_SEPARATOR, '/../laravel/migrations'));
+        $this->loadMigrationsFrom(__DIR__ . str_replace('/', \DIRECTORY_SEPARATOR, '/../laravel/migrations'));
 
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -28,15 +29,17 @@ class LaravelWaveProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app->singleton(Zwave::class, function () {
-            return new Zwave(new Client([
-                'base_uri' => implode('', [
-                    config('laravelwave.host'),
-                    ':',
-                    config('laravelwave.port'),
-                    Zwave::BASE_PATH,
-                ]),
-            ]));
+        $this->app->singleton(ClientInterface::class, static function () {
+            return app()->makeWith(Client::class, [
+                'config' => [
+                    'base_uri' => implode('', [
+                        config('laravelwave.host'),
+                        ':',
+                        config('laravelwave.port'),
+                        Zwave::BASE_PATH,
+                    ]),
+                ],
+            ]);
         });
     }
 }

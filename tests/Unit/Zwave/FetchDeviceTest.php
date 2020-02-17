@@ -8,6 +8,11 @@ namespace Tests\Unit\Zwave;
 use Carbon\Carbon;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
 use Tests\TestCase;
@@ -41,15 +46,30 @@ class FetchDeviceTest extends TestCase
             $mockZwave->shouldReceive('hasToken')->once()->andReturnTrue();
             $mockZwave->shouldReceive('listDevices')
                 ->withNoArgs()
-                ->andReturn($devices)
-            ;
+                ->andReturn($devices);
 
             return $mockZwave;
         });
 
         $this->artisan('zway:fetch-devices')
             ->expectsOutput('8 devices reported. 3 new devices added.')
-            ->assertExitCode(0)
-        ;
+            ->assertExitCode(0);
+    }
+
+    public function testUnauthorizedResponse(): void
+    {
+        $this->app->singleton(ClientInterface::class, static function () {
+            return new Client([
+                'handler' => HandlerStack::create(new MockHandler([
+                    new Response(401),
+                    new Response(200),
+                    new Response(401),
+                ])),
+            ]);
+        });
+
+        $this->artisan('zway:fetch-devices')
+            ->expectsOutput('Failed to connect to Z-Way Server.')
+            ->assertExitCode(1);
     }
 }

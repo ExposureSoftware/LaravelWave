@@ -12,6 +12,7 @@ use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Metric;
 use ExposureSoftware\LaravelWave\Zwave\Commands\SwitchBinary;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
@@ -513,9 +514,13 @@ class ZwaveTest extends TestCase
         $reflection = new ReflectionClass($zwave);
         $clientProperty = $reflection->getProperty('client');
         $clientProperty->setAccessible(true);
+        /** @var Client $client */
+        $client = $clientProperty->getValue($zwave);
         /** @var Uri $uri */
-        $uri = $clientProperty->getValue($zwave)->getConfig('base_uri');
+        $uri = $client->getConfig('base_uri');
 
+        static::assertInstanceOf(Client::class, $client);
+        static::assertNotNull($uri, 'Guzzle client base URI not set correctly.');
         static::assertSame($host, "{$uri->getScheme()}://{$uri->getHost()}");
         static::assertSame($port, $uri->getPort());
         static::assertSame(Zwave::BASE_PATH, $uri->getPath());
