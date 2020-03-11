@@ -45,7 +45,7 @@ class FetchDevices extends Command
         $this->line('Fetching devices...');
         $devices = $zwave->listDevices();
         $newDevices = $devices
-            ->filter(function (Device $device) use ($startTime) {
+            ->filter(static function (Device $device) use ($startTime) {
                 return $startTime->lessThanOrEqualTo($device->{$device->getCreatedAtColumn()});
             })
             ->count();

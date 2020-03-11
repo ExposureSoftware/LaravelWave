@@ -201,7 +201,7 @@ class Zwave
     protected function save(Collection $models): bool
     {
         try {
-            DB::transaction(function () use ($models) {
+            DB::transaction(static function () use ($models) {
                 return $models->each(function (Collection $modelSet) {
                     $modelSet->each(function (Model $model) {
                         $model->save();
@@ -225,6 +225,7 @@ class Zwave
     protected function addHeadersTo(RequestInterface $request): RequestInterface
     {
         if ($this->hasToken()) {
+            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
             $request = $request->withAddedHeader('ZWAYSession', $this->token);
             Log::debug('Added Authorization token to request.');
         }
