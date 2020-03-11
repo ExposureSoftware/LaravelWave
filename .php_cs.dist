@@ -17,7 +17,7 @@ $config = PhpCsFixer\Config::create()
         'backtick_to_shell_exec'                      => true,
         'binary_operator_spaces'                      => [
             'operators' => [
-                '=>' => 'align_single_space_minimal',
+                '=>' => 'align',
             ],
         ],
         'blank_line_after_namespace'                  => true,

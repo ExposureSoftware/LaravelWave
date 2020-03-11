@@ -7,20 +7,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7591607a-79be-44ce-b21f-d34b424b041b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/marshall.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/laravel/migrations/2020_03_11_000001_add_location_tables.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Models/Location.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Models/Device.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/Device.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Zwave/Zwave.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Zwave/Zwave.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Unit/Zwave/ZwaveTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/Zwave/ZwaveTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.php_cs.dist" beforeDir="false" afterPath="$PROJECT_DIR$/.php_cs.dist" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution>
       <executable />
@@ -166,7 +163,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1583884143702</updated>
-      <workItem from="1583884146313" duration="11180000" />
+      <workItem from="1583884146313" duration="11313000" />
+      <workItem from="1583904927397" duration="289000" />
     </task>
     <servers />
   </component>
