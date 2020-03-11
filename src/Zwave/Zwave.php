@@ -9,6 +9,7 @@ use ExposureSoftware\LaravelWave\Events\CommandSent;
 use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
+use ExposureSoftware\LaravelWave\Models\Location;
 use ExposureSoftware\LaravelWave\Models\Metric;
 use ExposureSoftware\LaravelWave\Zwave\Commands\Commands;
 use GuzzleHttp\ClientInterface;
@@ -147,6 +148,12 @@ class Zwave
         $metricModels = collect();
 
         $devices->each(function (stdClass $attributes) use ($deviceModels, $metricModels): void {
+            if (Location::where(['id' => $attributes->location])->doesntExist()) {
+                Location::create([
+                    'id'   => $attributes->location,
+                    'name' => $attributes->locationName,
+                ]);
+            }
             $device = Device::where(['id' => $attributes->id])->first() ?? $this->device(collect((array) $attributes));
             Log::debug(implode(' ', [
                 'Device record for ID',
@@ -202,8 +209,8 @@ class Zwave
     {
         try {
             DB::transaction(static function () use ($models) {
-                return $models->each(function (Collection $modelSet) {
-                    $modelSet->each(function (Model $model) {
+                return $models->each(static function (Collection $modelSet) {
+                    $modelSet->each(static function (Model $model) {
                         $model->save();
                     });
                 });

@@ -7,14 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7591607a-79be-44ce-b21f-d34b424b041b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/LaravelWave.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php-test-framework.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Commands/FetchDevices.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Commands/FetchDevices.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/marshall.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/laravel/migrations/2020_03_11_000001_add_location_tables.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Models/Location.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Models/Device.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Models/Device.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Zwave/Zwave.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Zwave/Zwave.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Unit/Zwave/ZwaveTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Unit/Zwave/ZwaveTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +142,7 @@
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="settings.saveactions" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RunManager">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
@@ -167,7 +166,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1583884143702</updated>
-      <workItem from="1583884146313" duration="8300000" />
+      <workItem from="1583884146313" duration="11180000" />
     </task>
     <servers />
   </component>
@@ -195,26 +194,30 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="564" y="148" width="936" height="712" key="#tests/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583887534827" />
-    <state width="1358" height="217" key="GridCell.Tab.0.bottom" timestamp="1583900151752">
+    <state width="1358" height="217" key="GridCell.Tab.0.bottom" timestamp="1583903802483">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1358" height="217" key="GridCell.Tab.0.bottom/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583900151752" />
-    <state width="1358" height="217" key="GridCell.Tab.0.center" timestamp="1583900151752">
+    <state width="1358" height="217" key="GridCell.Tab.0.bottom/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583903802483" />
+    <state width="1358" height="217" key="GridCell.Tab.0.center" timestamp="1583903802483">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1358" height="217" key="GridCell.Tab.0.center/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583900151752" />
-    <state width="1358" height="217" key="GridCell.Tab.0.left" timestamp="1583900151748">
+    <state width="1358" height="217" key="GridCell.Tab.0.center/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583903802483" />
+    <state width="1358" height="217" key="GridCell.Tab.0.left" timestamp="1583903802482">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1358" height="217" key="GridCell.Tab.0.left/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583900151748" />
-    <state width="1358" height="217" key="GridCell.Tab.0.right" timestamp="1583900151752">
+    <state width="1358" height="217" key="GridCell.Tab.0.left/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583903802482" />
+    <state width="1358" height="217" key="GridCell.Tab.0.right" timestamp="1583903802483">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state width="1358" height="217" key="GridCell.Tab.0.right/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583900151752" />
-    <state x="398" y="143" key="SettingsEditor" timestamp="1583900331388">
+    <state width="1358" height="217" key="GridCell.Tab.0.right/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583903802483" />
+    <state x="737" y="329" key="NewPhpClassDialog" timestamp="1583902161474">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
-    <state x="398" y="143" key="SettingsEditor/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583900331388" />
+    <state x="737" y="329" key="NewPhpClassDialog/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583902161474" />
+    <state x="398" y="143" key="SettingsEditor" timestamp="1583901500313">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="398" y="143" key="SettingsEditor/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583901500313" />
     <state x="0" y="23" key="com.jetbrains.php.config.phpInfo.PhpInfo.PhpInfoDialog" timestamp="1583887499164">
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
@@ -223,5 +226,9 @@
       <screen x="0" y="23" width="1920" height="1057" />
     </state>
     <state x="569" y="140" width="639" height="729" key="find.popup/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583886732837" />
+    <state x="692" y="267" width="670" height="676" key="search.everywhere.popup" timestamp="1583903359221">
+      <screen x="0" y="23" width="1920" height="1057" />
+    </state>
+    <state x="692" y="267" width="670" height="676" key="search.everywhere.popup/1920.23.1920.1057/0.23.1920.1057@0.23.1920.1057" timestamp="1583903359221" />
   </component>
 </project>

@@ -6,6 +6,7 @@
 namespace ExposureSoftware\LaravelWave\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Device extends Model
@@ -25,10 +26,16 @@ class Device extends Model
         'probeType',
         'visibility',
         'node_id',
+        'location_id',
     ];
 
     public function metrics(): HasOne
     {
         return $this->hasOne(Metric::class, 'device_id');
+    }
+
+    public function location(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'location_id');
     }
 }
