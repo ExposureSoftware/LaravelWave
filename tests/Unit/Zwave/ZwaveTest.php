@@ -893,8 +893,8 @@ class ZwaveTest extends TestCase
             'h'                  => -1891043069,
             'hasHistory'         => false,
             'id'                 => 'MailNotifier_12',
-            'location'           => 0,
-            'locationName'       => 'Bedroom',
+            'location'           => 1,
+            'locationName'       => 'Bathroom',
             'metrics'            => (object) [
                 'level'   => 'on',
                 'title'   => 'Send Email Notification',
@@ -938,10 +938,11 @@ class ZwaveTest extends TestCase
             $history
         ));
 
-        $zwave->listDevices(false);
+        $zwave->listDevices();
         $device->refresh();
 
-        $this->assertSame('test', $device->probeType);
+        $this->assertSame('notification_email', $device->probeType);
+        $this->assertEquals(1, $device->location);
     }
 
     public function testUpdateDevice(): void

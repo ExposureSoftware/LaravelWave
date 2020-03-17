@@ -206,7 +206,7 @@ class Zwave
             DB::transaction(static function () use ($models) {
                 return $models->each(static function (Collection $modelSet) {
                     $modelSet->each(static function (Model $model) {
-                        $model->save();
+                        $model->saveOrFail();
                     });
                 });
             });
