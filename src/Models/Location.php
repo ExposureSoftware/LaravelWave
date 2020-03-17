@@ -19,7 +19,7 @@ class Location extends Model
     public function scopeHasDevices(Builder $query): Builder
     {
         return $query->whereHas('devices')
-            ->join('zway_locations', 'locations.id', '=', 'zway_devices.location');
+            ->join('zway_locations', 'zway_locations.id', '=', 'zway_devices.location');
     }
 
     public function devices(): HasMany
