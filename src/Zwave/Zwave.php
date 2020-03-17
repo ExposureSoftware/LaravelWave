@@ -69,8 +69,8 @@ class Zwave
      * @param bool        $andStoreToken
      *
      * @return bool
-     * @throws NoToken
      * @throws NetworkFailure
+     * @throws NoToken
      * @noinspection CallableParameterUseCaseInTypeContextInspection
      */
     public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
