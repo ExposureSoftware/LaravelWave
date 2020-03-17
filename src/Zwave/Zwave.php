@@ -154,7 +154,7 @@ class Zwave
                     'name' => $attributes->locationName,
                 ]);
             }
-            $device = Device::where(['id' => $attributes->id])->first() ?? $this->device(collect((array) $attributes));
+            $device = $this->device(Device::firstOrNew(['id' => $attributes->id]), collect((array) $attributes));
             Log::debug(implode(' ', [
                 'Device record for ID',
                 $attributes->id,
@@ -180,14 +180,9 @@ class Zwave
         return $metric->fill($this->matchColumns($metric, $from));
     }
 
-    protected function device(Collection $from): Device
+    protected function device(Device $device, Collection $from): Device
     {
-        $device = new Device([
-            /*
-             * Why this attribute is not camel case is a mystery.
-             */
-            'permanently_hidden' => $from->get('permanently_hidden'),
-        ]);
+        $device->permanently_hidden = $from->get('permanently_hidden');
 
         return $device->fill($this->matchColumns($device, $from));
     }
