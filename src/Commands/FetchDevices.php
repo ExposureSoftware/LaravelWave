@@ -37,6 +37,7 @@ class FetchDevices extends Command
     {
         $loggedIn = false;
         $this->line('Logging in to Z-Way server...');
+
         try {
             $loggedIn = $zwave->login();
         } catch (NetworkFailure $e) {
