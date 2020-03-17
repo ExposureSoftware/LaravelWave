@@ -2,7 +2,9 @@
 /**
  * ExposureSoftware
  */
+
 use ExposureSoftware\LaravelWave\Models\Device;
+use ExposureSoftware\LaravelWave\Models\Location;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
@@ -19,7 +21,7 @@ use Illuminate\Database\Eloquent\Factory;
 |
  */
 
-$factory->define(Device::class, function (Faker $faker) {
+$factory->define(Device::class, static function (Faker $faker) {
     return [
         'id'                 => $faker->unique()->word,
         'device_type'        => $faker->word,
@@ -31,5 +33,8 @@ $factory->define(Device::class, function (Faker $faker) {
         'probeType'          => $faker->word,
         'visibility'         => $faker->boolean,
         'node_id'            => $faker->unique()->randomNumber(),
+        'location'           => static function () {
+            return factory(Location::class)->create()->id;
+        },
     ];
 });
