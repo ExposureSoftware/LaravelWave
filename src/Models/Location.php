@@ -2,9 +2,16 @@
 
 namespace ExposureSoftware\LaravelWave\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Class Location
+ *
+ * @package ExposureSoftware\LaravelWave\Models
+ * @method Builder withDevices(Builder $query)
+ */
 class Location extends Model
 {
     public $incrementing = false;
@@ -14,6 +21,12 @@ class Location extends Model
         'id',
         'name',
     ];
+
+    public function scopeWithDevices(Builder $query): Builder
+    {
+        return $query->whereHas('devices')
+            ->join('zway_locations', 'locations.id', '=', 'zway_devices.location');
+    }
 
     public function devices(): HasMany
     {
