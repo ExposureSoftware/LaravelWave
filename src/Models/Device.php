@@ -26,7 +26,7 @@ class Device extends Model
         'probeType',
         'visibility',
         'node_id',
-        'location_id',
+        'location',
     ];
 
     public function metrics(): HasOne
@@ -36,6 +36,6 @@ class Device extends Model
 
     public function location(): BelongsTo
     {
-        return $this->belongsTo(Location::class, 'location_id');
+        return $this->belongsTo(Location::class, 'location');
     }
 }
