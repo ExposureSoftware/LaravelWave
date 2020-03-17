@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * Class Location
  *
  * @package ExposureSoftware\LaravelWave\Models
- * @method Builder withDevices(Builder $query)
+ * @method Builder hasDevices(Builder $query)
  */
 class Location extends Model
 {
@@ -22,7 +22,7 @@ class Location extends Model
         'name',
     ];
 
-    public function scopeWithDevices(Builder $query): Builder
+    public function scopeHasDevices(Builder $query): Builder
     {
         return $query->whereHas('devices')
             ->join('zway_locations', 'locations.id', '=', 'zway_devices.location');
