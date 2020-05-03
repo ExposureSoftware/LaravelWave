@@ -15,6 +15,10 @@ class Device extends Model
 
     protected $table = 'zway_devices';
     protected $keyType = 'string';
+    protected $dates = [
+        'update_time',
+        'creation_time',
+    ];
     protected $fillable = [
         'id',
         'device_type',

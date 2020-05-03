@@ -620,11 +620,14 @@ class ZwaveTest extends TestCase
         $devices->each(function (Device $device) use ($deviceOne, $deviceTwo) {
             collect($device->getAttributes())
                 ->reject(static function ($value, string $key): bool {
-                    return 'permanently_hidden' === $key;
+                    return in_array($key, ['permanently_hidden', 'update_time', 'creation_time']);
                 })
                 ->each(function ($value, string $attribute) use ($deviceOne, $deviceTwo) {
                     $attribute = Str::camel($attribute);
-                    $this->assertTrue(($deviceOne->{$attribute} ?? null) === $value || ($deviceTwo->{$attribute} ?? null) === $value);
+                    $this->assertTrue(
+                        ($deviceOne->{$attribute} ?? null) === $value || ($deviceTwo->{$attribute} ?? null) === $value,
+                        "The value {$value} was not found for {$attribute} of either device."
+                    );
                 });
         });
     }
