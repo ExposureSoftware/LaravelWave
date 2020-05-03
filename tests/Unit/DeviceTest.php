@@ -45,9 +45,9 @@ class DeviceTest extends TestCase
             'node_id'  => 15,
         ]);
         factory(Device::class)->create([
-            'location' => factory(Location::class)->create()->id,
-            'node_id'  => 15,
-            'device_type' => 'battery'
+            'location'    => factory(Location::class)->create()->id,
+            'node_id'     => 15,
+            'device_type' => 'battery',
         ]);
         factory(Device::class)->create([
             'node_id' => 2,
