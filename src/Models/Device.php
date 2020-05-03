@@ -5,6 +5,8 @@
 
 namespace ExposureSoftware\LaravelWave\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -41,5 +43,17 @@ class Device extends Model
     public function location(): BelongsTo
     {
         return $this->belongsTo(Location::class, 'location');
+    }
+
+    public function siblings(?string $type = null): Collection
+    {
+        return self::where([
+            ['node_id', '=', $this->node_id],
+            ['id', '<>', $this->id],
+        ])
+            ->when($type, static function (Builder $query, $type) {
+                $query->where(['device_type' => $type]);
+            })
+            ->get();
     }
 }
