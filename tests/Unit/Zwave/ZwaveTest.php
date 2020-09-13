@@ -6,7 +6,8 @@
 namespace Tests\Unit\Zwave;
 
 use Carbon\Carbon;
-use ExposureSoftware\LaravelWave\Exceptions\NoToken;
+use ExposureSoftware\LaravelWave\Exceptions\InvalidCredentials;
+use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Location;
 use ExposureSoftware\LaravelWave\Models\Metric;
@@ -85,15 +86,34 @@ class ZwaveTest extends TestCase
         static::assertFalse($zwave->hasToken());
     }
 
-    public function testWillNotSendWithoutToken(): void
+    public function testLogsInWithoutToken(): void
     {
-        $this->expectException(NoToken::class);
         Storage::shouldReceive('disk')->with('local')->andReturnSelf();
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnFalse();
+        Storage::shouldReceive('put')->andReturnSelf();
 
-        $zwave = new Zwave($this->getMockClient());
+        $zwave = new Zwave($this->getMockClient([
+            new Response(
+                200,
+                [],
+                \GuzzleHttp\json_encode([
+                    'data' => (object) [
+                        'sid' => 'aToken',
+                    ],
+                ])
+            ),
+            new Response(
+                200,
+                [],
+                \GuzzleHttp\json_encode([
+                    'data' => (object) [
+                        'devices' => [],
+                    ],
+                ])
+            ),
+        ]));
 
-        $zwave->listDevices();
+        self::assertEmpty($zwave->listDevices());
     }
 
     public function testLoginSendsWithoutToken(): void
@@ -139,7 +159,7 @@ class ZwaveTest extends TestCase
 
     public function testHandlesClientException(): void
     {
-        $this->expectException(NoToken::class);
+        $this->expectException(NetworkFailure::class);
         Storage::shouldReceive('disk')->with('local')->andReturnSelf();
         Storage::shouldReceive('exists')->with('zwave_token')->andReturnFalse();
 
@@ -1047,7 +1067,7 @@ class ZwaveTest extends TestCase
 
     public function testThrowsExceptionForLogin(): void
     {
-        $this->expectException(NoToken::class);
+        $this->expectException(InvalidCredentials::class);
 
         (new Zwave($this->getMockClient(
             [
@@ -1060,24 +1080,6 @@ class ZwaveTest extends TestCase
                 ),
             ]
         )))->login();
-    }
-
-    public function testThrowExceptionIfCanNotLogIn(): void
-    {
-        $this->expectException(NoToken::class);
-
-        (new Zwave($this->getMockClient(
-            [
-                new Response(
-                    401,
-                    [],
-                    \GuzzleHttp\json_encode([
-                        'code' => 401,
-                    ])
-                ),
-                new Response(500),
-            ]
-        )))->listDevices();
     }
 
     public function storageProvider(): array

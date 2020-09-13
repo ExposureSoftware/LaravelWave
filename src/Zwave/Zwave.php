@@ -6,8 +6,8 @@
 namespace ExposureSoftware\LaravelWave\Zwave;
 
 use ExposureSoftware\LaravelWave\Events\CommandSent;
+use ExposureSoftware\LaravelWave\Exceptions\InvalidCredentials;
 use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
-use ExposureSoftware\LaravelWave\Exceptions\NoToken;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Location;
 use ExposureSoftware\LaravelWave\Models\Metric;
@@ -18,6 +18,7 @@ use GuzzleHttp\Psr7\Request;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Response as LaravelResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -36,6 +37,8 @@ class Zwave
     protected $client;
     /** @var string */
     protected $token;
+    /** @var bool $sendWithoutToken */
+    protected $sendWithoutToken = false;
 
     public function __construct(ClientInterface $client)
     {
@@ -69,14 +72,14 @@ class Zwave
      * @param bool        $andStoreToken
      *
      * @return bool
-     * @throws NetworkFailure
-     * @throws NoToken
+     * @throws GuzzleException
      * @noinspection CallableParameterUseCaseInTypeContextInspection
      */
     public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
     {
         $as = $as ?? config('laravelwave.user', '');
         $withPassword = $withPassword ?? config('laravelwave.password');
+        $this->sendWithoutToken = true;
 
         $response = $this->send(
             new Request(
@@ -87,8 +90,7 @@ class Zwave
                     'login'    => $as,
                     'password' => $withPassword,
                 ])
-            ),
-            false
+            )
         );
         $this->token = $response->sid;
 
@@ -253,26 +255,27 @@ class Zwave
 
     /**
      * @param RequestInterface $request
-     * @param bool             $withToken
      *
      * @return Response
-     * @throws NoToken
+     * @throws InvalidCredentials
      * @throws NetworkFailure
      */
-    protected function send(RequestInterface $request, bool $withToken = true): Response
+    protected function send(RequestInterface $request): Response
     {
-        if ($withToken && !$this->hasToken()) {
-            throw new NoToken();
-        }
-
         try {
-            return new Response($this->client->send($this->addHeadersTo($request)));
-        } catch (GuzzleException $e) {
-            if (!$withToken || !$this->login()) {
-                throw new NoToken();
+            if (!$this->sendWithoutToken && !$this->hasToken() && !$this->login()) {
+                throw new InvalidCredentials();
             }
 
-            return $this->send($request, $withToken);
+            return new Response($this->client->send($this->addHeadersTo($request)));
+        } catch (GuzzleException $guzzleException) {
+            switch ($guzzleException->getCode()) {
+                case LaravelResponse::HTTP_UNAUTHORIZED:
+                case LaravelResponse::HTTP_FORBIDDEN:
+                    throw new InvalidCredentials();
+                default:
+                    throw new NetworkFailure($guzzleException);
+            }
         }
     }
 }
