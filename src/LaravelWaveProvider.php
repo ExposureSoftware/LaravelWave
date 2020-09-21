@@ -6,6 +6,7 @@
 namespace ExposureSoftware\LaravelWave;
 
 use ExposureSoftware\LaravelWave\Commands\FetchDevices;
+use ExposureSoftware\LaravelWave\Commands\GetToken;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -23,6 +24,7 @@ class LaravelWaveProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 FetchDevices::class,
+                GetToken::class,
             ]);
         }
     }

@@ -8,6 +8,7 @@ namespace ExposureSoftware\LaravelWave\Zwave;
 use ExposureSoftware\LaravelWave\Events\CommandSent;
 use ExposureSoftware\LaravelWave\Exceptions\InvalidCredentials;
 use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
+use ExposureSoftware\LaravelWave\Exceptions\PermissionDenied;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Models\Location;
 use ExposureSoftware\LaravelWave\Models\Metric;
@@ -72,7 +73,9 @@ class Zwave
      * @param bool        $andStoreToken
      *
      * @return bool
-     * @throws GuzzleException
+     * @throws InvalidCredentials
+     * @throws NetworkFailure
+     * @throws PermissionDenied
      * @noinspection CallableParameterUseCaseInTypeContextInspection
      */
     public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
@@ -93,6 +96,7 @@ class Zwave
             )
         );
         $this->token = $response->sid;
+        Log::debug('Fetched new token from ZWay server.');
 
         if ($andStoreToken) {
             $this->storeToken($this->token);
@@ -224,6 +228,7 @@ class Zwave
     protected function storeToken(string $value): void
     {
         Storage::disk('local')->put('zwave_token', encrypt($value));
+        Log::debug('Stored token to disk.');
     }
 
     protected function addHeadersTo(RequestInterface $request): RequestInterface
@@ -245,7 +250,7 @@ class Zwave
             } catch (FileNotFoundException $e) {
                 Log::error('Token storage does not exist following check.');
             } catch (DecryptException $e) {
-                Log::error("Could not decrypt token because {$e->getMessage()}");
+                Log::error("Could not decrypt token because: {$e->getMessage()}");
             }
         }
         Log::debug('Loaded token from file storage.');
@@ -259,6 +264,7 @@ class Zwave
      * @return Response
      * @throws InvalidCredentials
      * @throws NetworkFailure
+     * @throws PermissionDenied
      */
     protected function send(RequestInterface $request): Response
     {
@@ -267,12 +273,15 @@ class Zwave
                 throw new InvalidCredentials();
             }
 
+            $this->sendWithoutToken = false;
+
             return new Response($this->client->send($this->addHeadersTo($request)));
         } catch (GuzzleException $guzzleException) {
             switch ($guzzleException->getCode()) {
                 case LaravelResponse::HTTP_UNAUTHORIZED:
-                case LaravelResponse::HTTP_FORBIDDEN:
                     throw new InvalidCredentials();
+                case LaravelResponse::HTTP_FORBIDDEN:
+                    throw new PermissionDenied();
                 default:
                     throw new NetworkFailure($guzzleException);
             }

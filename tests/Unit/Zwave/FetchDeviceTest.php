@@ -6,11 +6,8 @@
 namespace Tests\Unit\Zwave;
 
 use Carbon\Carbon;
-use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
-use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Collection;
 use Mockery;
 use Tests\TestCase;
@@ -21,19 +18,13 @@ class FetchDeviceTest extends TestCase
     {
         $this->app->bind(Zwave::class, static function () {
             $mockZwave = Mockery::mock(Zwave::class);
-            $mockZwave->shouldReceive('login')
-                ->once()
-                ->andThrow(new NetworkFailure(
-                    new ConnectException('Could not connect.', new Request('GET', '/'))
-                ));
             $mockZwave->shouldReceive('hasToken')->andReturn(false);
 
             return $mockZwave;
         });
 
         $this->artisan('zway:fetch-devices')
-            ->expectsOutput('FAILED')
-            ->assertExitCode(0);
+            ->assertExitCode(1);
     }
 
     public function testFetchesDevices(): void
