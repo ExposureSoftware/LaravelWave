@@ -113,6 +113,15 @@ class Zwave
         return $this->hasToken();
     }
 
+    /**
+     * @param Device $device
+     * @param bool   $andSave
+     *
+     * @return Device
+     * @throws InvalidCredentials
+     * @throws NetworkFailure
+     * @throws PermissionDenied
+     */
     public function update(Device $device, $andSave = true): Device
     {
         $response = $this->send(new Request(
