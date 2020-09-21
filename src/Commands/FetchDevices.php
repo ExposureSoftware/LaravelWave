@@ -6,6 +6,9 @@
 namespace ExposureSoftware\LaravelWave\Commands;
 
 use Carbon\Carbon;
+use ExposureSoftware\LaravelWave\Exceptions\InvalidCredentials;
+use ExposureSoftware\LaravelWave\Exceptions\NetworkFailure;
+use ExposureSoftware\LaravelWave\Exceptions\PermissionDenied;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use Illuminate\Console\Command;
@@ -30,13 +33,32 @@ class FetchDevices extends Command
         return $exitCode ?? 0;
     }
 
-    protected function fetch(Zwave $zwave): void
+    /**
+     * @param Zwave $zwave
+     * @param bool  $retry
+     *
+     * @throws InvalidCredentials
+     * @throws NetworkFailure
+     * @throws PermissionDenied
+     */
+    protected function fetch(Zwave $zwave, $retry = true): void
     {
         $startTime = Carbon::now();
 
         if ($zwave->hasToken() || $this->call('zway:store-token') === 0) {
             $this->line('Fetching devices...');
-            $devices = $zwave->listDevices();
+
+            try {
+                $devices = $zwave->listDevices();
+            } catch (InvalidCredentials $unauthorized) {
+                if ($retry) {
+                    $this->call('zway:store-token');
+                    $this->fetch($zwave, false);
+                } else {
+                    throw $unauthorized;
+                }
+            }
+
             $newDevices = $devices
                 ->filter(static function (Device $device) use ($startTime) {
                     return $startTime->lessThanOrEqualTo($device->{$device->getCreatedAtColumn()});

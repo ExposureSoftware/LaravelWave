@@ -52,6 +52,14 @@ class Zwave
         return is_string($this->token);
     }
 
+    /**
+     * @param bool $andSave
+     *
+     * @return Collection
+     * @throws InvalidCredentials
+     * @throws NetworkFailure
+     * @throws PermissionDenied
+     */
     public function listDevices(bool $andSave = true): Collection
     {
         $response = $this->send(new Request(
