@@ -12,6 +12,7 @@ use ExposureSoftware\LaravelWave\Exceptions\PermissionDenied;
 use ExposureSoftware\LaravelWave\Models\Device;
 use ExposureSoftware\LaravelWave\Zwave\Zwave;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class FetchDevices extends Command
@@ -44,6 +45,7 @@ class FetchDevices extends Command
     protected function fetch(Zwave $zwave, $retry = true): void
     {
         $startTime = Carbon::now();
+        $devices = collect();
 
         if ($zwave->hasToken() || $this->call('zway:store-token') === 0) {
             $this->line('Fetching devices...');
@@ -52,6 +54,7 @@ class FetchDevices extends Command
                 $devices = $zwave->listDevices();
             } catch (InvalidCredentials $unauthorized) {
                 if ($retry) {
+                    Log::debug('Invalid token for fetching devices. Attempting to retrieve new token.');
                     $this->call('zway:store-token');
                     $this->fetch($zwave, false);
                 } else {
@@ -59,6 +62,7 @@ class FetchDevices extends Command
                 }
             }
 
+            Log::debug('Counting new devices.');
             $newDevices = $devices
                 ->filter(static function (Device $device) use ($startTime) {
                     return $startTime->lessThanOrEqualTo($device->{$device->getCreatedAtColumn()});

@@ -25,6 +25,7 @@ class GetToken extends Command
      */
     public function handle(Zwave $zwave): int
     {
+        Log::debug('Fetching new Zwave token.');
         $this->line('Logging in to Z-Way server...');
 
         if ($zwave->hasToken()) {

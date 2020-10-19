@@ -88,6 +88,7 @@ class Zwave
      */
     public function login(string $as = null, string $withPassword = null, bool $andStoreToken = true): bool
     {
+        Log::debug('Attempting to log in to Zwave server.');
         $as = $as ?? config('laravelwave.user', '');
         $withPassword = $withPassword ?? config('laravelwave.password');
         $this->sendWithoutToken = true;
@@ -244,6 +245,7 @@ class Zwave
 
     protected function storeToken(string $value): void
     {
+        Log::debug('Storing Zwave token to disk.');
         Storage::disk('local')->put('zwave_token', encrypt($value));
         Log::debug('Stored token to disk.');
     }
